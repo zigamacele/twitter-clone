@@ -40,7 +40,7 @@ export default function Profile() {
       setProfile(doc.data());
     });
   }
-  findUsername();
+  //findUsername();
 
   return (
     <div>

@@ -7,13 +7,15 @@ import AllTweets from './AllTweets';
 
 export default function Home() {
   return (
-    <div className="">
+    <div>
       <SelectUsername />
       <div className="flex justify-center">
         <Navigation />
-        <div>
-          <p>Home</p>
-          <div className="flex flex-col">
+        <div className="border border-gray-800">
+          <p className="py-5 px-3 font-bold text-xl border border-gray-800">
+            Home
+          </p>
+          <div className="flex flex-col overflow-scroll h-screen scrollbar-hide">
             <Tweet />
             <AllTweets />
           </div>

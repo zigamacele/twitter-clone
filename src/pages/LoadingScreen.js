@@ -4,7 +4,7 @@ import Logo from '@/images/twitter-logo.webp';
 
 export default function LoadingScreen() {
   return (
-    <div className=" bg-black w-screen h-screen flex items-center justify-center">
+    <div className=" bg-black w-screen h-screen flex items-center justify-center z-50">
       <Image
         src={Logo}
         alt="twitter-logo"

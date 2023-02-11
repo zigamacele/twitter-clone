@@ -40,13 +40,14 @@ export default function AllTweets() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col">
       <button
+        className="py-3 border border-gray-800 text-blue-500"
         onClick={() => {
           fetchAllTweets();
         }}
       >
-        Reload tweets
+        Show new Tweets
       </button>
       {allTweets.map((tweet) => {
         return <DisplayTweet tweet={tweet} />;

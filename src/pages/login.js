@@ -30,6 +30,7 @@ import { useRouter } from 'next/router';
 import { db } from './firebase-config';
 import LoadingScreen from './LoadingScreen';
 import Logo from '@/images/twitter-logo-white.png';
+
 import { FcGoogle } from 'react-icons/fc';
 import { AiFillApple } from 'react-icons/ai';
 import { MdOutlineEmail } from 'react-icons/md';
