@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
 import { db } from './firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { onSnapshot, doc } from 'firebase/firestore';
-import { router } from 'next/router';
+import {
+  onSnapshot,
+  addDoc,
+  doc,
+  collection,
+  serverTimestamp,
+} from 'firebase/firestore';
 
 import { RxImage } from 'react-icons/rx';
 import {
@@ -17,6 +22,8 @@ import { IoIosArrowDown } from 'react-icons/io';
 
 export default function Tweet() {
   const [currentUser, setCurrentUser] = useState('');
+  const [input, setInput] = useState('');
+  const [inputLength, setInputLength] = useState(0);
 
   const auth = getAuth();
 
@@ -28,10 +35,26 @@ export default function Tweet() {
           setCurrentUser(doc.data());
         }
       );
-    } else {
-      router.push('/login');
     }
   });
+
+  function handleChange(e) {
+    const inputEventValue = e.target.value;
+    if (inputEventValue.length > 140) return;
+    setInput(inputEventValue);
+    setInputLength(inputEventValue.length);
+  }
+
+  async function handleTweet() {
+    await addDoc(collection(db, 'all-tweets'), {
+      userID: getAuth().currentUser.uid,
+      message: input,
+      timestamp: serverTimestamp(),
+    });
+
+    setInput('');
+    setInputLength(0);
+  }
 
   return (
     <div className="flex">
@@ -46,10 +69,16 @@ export default function Tweet() {
             <p>Everyone</p>
             <IoIosArrowDown />
           </div>
-          <input className="border" placeholder="What's happening?" />
+          <input
+            value={input}
+            className="border"
+            placeholder="What's happening?"
+            onChange={handleChange}
+          />
           <div className="flex">
             <BsGlobe2 />
             <p>Everyone can reply</p>
+            <p>{inputLength} / 140</p>
           </div>
           <hr />
         </div>
@@ -62,7 +91,7 @@ export default function Tweet() {
             <AiOutlineCalendar />
             <TfiLocationPin />
           </div>
-          <button>Tweet</button>
+          <button onClick={handleTweet}>Tweet</button>
         </div>
       </div>
     </div>

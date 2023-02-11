@@ -24,16 +24,12 @@ import {
   serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '@/pages/firebase-config';
-import {
-  HiHome,
-  HiOutpneDotsCircleHorizontal,
-  HiOutlineSearch,
-} from 'react-icons/hi';
 import { FiBookmark } from 'react-icons/fi';
-import { RiFilepst2pne } from 'react-icons/ri';
 import { BiUser, BiBell } from 'react-icons/bi';
-import { IoMailOutline } from 'react-icons/io';
-import { firebaseConfig } from '@/pages/firebase-config';
+import { AiOutlineHome } from 'react-icons/ai';
+import { TbSearch, TbDotsCircleHorizontal, TbMail } from 'react-icons/tb';
+import { BsCardChecklist } from 'react-icons/bs';
+import { RiQuillPenLine } from 'react-icons/ri';
 
 export default function Navigation() {
   const [currentUser, setCurrentUser] = useState('');
@@ -54,8 +50,6 @@ export default function Navigation() {
           setCurrentUser(doc.data());
         }
       );
-    } else {
-      router.push('/login');
     }
   });
 
@@ -69,31 +63,42 @@ export default function Navigation() {
       <div>
         <div>
           <div>
+            <AiOutlineHome />
             <p>Home</p>
           </div>
-          <div>
-            <p className="cursor-not-allowed">Explore</p>
+          <div className="cursor-not-allowed">
+            <TbSearch />
+            <p>Explore</p>
+          </div>
+          <div className="cursor-not-allowed">
+            <BiBell />
+            <p>Notification</p>
+          </div>
+          <div className="cursor-not-allowed">
+            <TbMail />
+            <p>Messages</p>
           </div>
           <div>
-            <p className="cursor-not-allowed">Notification</p>
-          </div>
-          <div>
-            <p className="cursor-not-allowed">Messages</p>
-          </div>
-          <div>
+            <FiBookmark />
             <p>Bookmarks</p>
           </div>
-          <div>
-            <p className="cursor-not-allowed">Lists</p>
+          <div className="cursor-not-allowed">
+            <BsCardChecklist />
+            <p>Lists</p>
           </div>
           <div>
+            <BiUser />
             <p>Profile</p>
           </div>
           <div>
-            <p className="cursor-not-allowed">More</p>
+            <TbDotsCircleHorizontal />
+            <p>More</p>
+          </div>
+          <div>
+            <RiQuillPenLine />
+            <button>Tweet</button>
           </div>
         </div>
-        <button>Tweet</button>
       </div>
       <div className="flex justify-between">
         <div className="flex">
@@ -114,6 +119,7 @@ export default function Navigation() {
             setLoading(true);
             setTimeout(() => {
               signOut(auth);
+              router.push('/login');
             }, 2000);
           }}
         >

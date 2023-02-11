@@ -45,36 +45,44 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const auth = getAuth();
+  const user = auth.currentUser;
 
   async function handleSignIn() {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-    } catch {
-      toast('Try again!');
-    }
-
-    const userIDs = [];
-    const querySnapshot = await getDocs(collection(db, 'users'));
-    querySnapshot.forEach((doc) => {
-      userIDs.push(doc.id);
-    });
-
-    if (auth.currentUser) {
-      if (!userIDs.includes(getAuth().currentUser.uid)) {
-        await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
-          displayName: getAuth().currentUser.displayName,
-          username: generateUsername(getAuth().currentUser.displayName),
-          profilePicURL: getAuth().currentUser.photoURL,
-          newUser: true,
-        });
+    if (user) {
+      setIsLoading(true);
+      setTimeout(() => {
+        router.push('/Home');
+      }, 2000);
+    } else {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch {
+        toast('Something went wrong, try again..');
       }
-    }
 
-    setIsLoading(true);
-    setTimeout(() => {
-      router.push('/Home');
-    }, 2000);
+      const userIDs = [];
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      querySnapshot.forEach((doc) => {
+        userIDs.push(doc.id);
+      });
+
+      if (auth.currentUser) {
+        if (!userIDs.includes(getAuth().currentUser.uid)) {
+          await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
+            displayName: getAuth().currentUser.displayName,
+            username: generateUsername(getAuth().currentUser.displayName),
+            profilePicURL: getAuth().currentUser.photoURL,
+            newUser: true,
+          });
+        }
+      }
+
+      setIsLoading(true);
+      setTimeout(() => {
+        router.push('/Home');
+      }, 2000);
+    }
   }
 
   return (

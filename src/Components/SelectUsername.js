@@ -16,6 +16,7 @@ import {
   getDocs,
   addDoc,
   query,
+  where,
   orderBy,
   limit,
   onSnapshot,
@@ -35,21 +36,21 @@ export default function SelectUsername() {
   const user = auth.currentUser;
 
   async function handleSetUsername() {
-    let uniqueUsernames = [];
-    const querySnapshot = await getDocs(collection(db, 'users'));
+    const uniqueUsernames = [];
+    const userRef = collection(db, 'users');
+    const querySnapshot = await getDocs(userRef);
     querySnapshot.forEach((doc) => {
-      console.log(doc);
+      uniqueUsernames.push(doc.data().username);
     });
-    console.log(uniqueUsernames);
 
-    // const docRef = doc(db, 'users', getAuth().currentUser.uid);
-    // if (inputValue.length > 2)
-    //   await updateDoc(docRef, {
-    //     username: inputValue,
-    //   });
-    // else console.log('error');
+    const docRef = doc(db, 'users', getAuth().currentUser.uid);
+    if (uniqueUsernames.includes(inputValue)) return toast('Username taken');
+    if (inputValue.length > 2)
+      await updateDoc(docRef, {
+        username: inputValue,
+      });
 
-    // handleSkip();
+    handleSkip();
   }
 
   async function handleSkip() {
@@ -77,20 +78,6 @@ export default function SelectUsername() {
     <div>
       {newUser ? (
         <div className="absolute w-screen h-screen bg-gray-700 bg-opacity-80">
-          <div className="absolute ">
-            <p>What should we call you?</p>
-            <p>Your @username is unique. You can always change it later.</p>
-            <input
-              className="border"
-              value={inputValue}
-              minlength="3"
-              onChange={(e) => {
-                handleChange(e);
-              }}
-            ></input>
-            <button onClick={handleSetUsername}>Set username</button>
-            <button onClick={handleSkip}>Skip</button>
-          </div>
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center bg-black  p-10 rounded-xl gap-1 text-white">
             <Image src={Logo} className="w-8 self-center mb-5" alt="logo" />
             <p className="text-3xl font-bold mb-1">What should we call you?</p>
