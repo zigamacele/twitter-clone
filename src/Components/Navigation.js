@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Popover } from '@headlessui/react';
 import { router } from 'next/router';
 import Image from 'next/image';
 import LoadingScreen from '@/pages/LoadingScreen';
@@ -7,7 +8,7 @@ import { onSnapshot, doc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/pages/firebase-config';
 import Logo from '@/images/twitter-logo-white.png';
 
-import { FiBookmark } from 'react-icons/fi';
+import { FiBookmark, FiLogOut } from 'react-icons/fi';
 import { BiUser, BiBell } from 'react-icons/bi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { TbSearch, TbDotsCircleHorizontal, TbMail } from 'react-icons/tb';
@@ -66,9 +67,11 @@ export default function Navigation() {
       <div className=" flex flex-col gap-8 mr-12 my-4">
         <Image src={Logo} alt="twitter-logo" className="w-7" />
         <div className="flex flex-col gap-5 text-xl font-light">
-          <div className="flex items-center gap-5 font-bold">
-            <AiOutlineHome />
-            <p>Home</p>
+          <div className="flex items-center gap-5 font-bold bg-red-500">
+            <div className=" flex items-center gap-5 bg-green-500">
+              <AiOutlineHome />
+              <p>Home</p>
+            </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
             <TbSearch />
@@ -94,7 +97,7 @@ export default function Navigation() {
             <BiUser />
             <p>Profile</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 cursor-not-allowed">
             <TbDotsCircleHorizontal />
             <p>More</p>
           </div>
@@ -121,16 +124,26 @@ export default function Navigation() {
             <p className="text-l text-gray-400">@{currentUser.username}</p>
           </div>
         </div>
-
-        <BsThreeDots
-          onClick={() => {
-            setLoading(true);
-            setTimeout(() => {
-              signOut(auth);
-              router.push('/login');
-            }, 2000);
-          }}
-        />
+        <Popover>
+          <Popover.Button>
+            <BsThreeDots />
+          </Popover.Button>
+          <Popover.Panel className="absolute flex bottom-[70px] flex-col b-50 z-50 bg-black rounded-xl shadow-3xl  ">
+            <div
+              onClick={() => {
+                setLoading(true);
+                setTimeout(() => {
+                  signOut(auth);
+                  router.push('/login');
+                }, 2000);
+              }}
+              className="flex items-center gap-2 font-bold pl-4 pr-16 py-2 pl-2 hover:bg-gray-800 cursor-pointer"
+            >
+              <FiLogOut />
+              <p>Logout</p>
+            </div>
+          </Popover.Panel>
+        </Popover>
       </div>
     </div>
   );

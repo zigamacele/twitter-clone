@@ -38,7 +38,6 @@ import { MdOutlineEmail } from 'react-icons/md';
 function generateUsername(name) {
   const randomNumber = Math.floor(Math.random() * 900) + 1;
   const newName = name.replace(/[^A-Z0-9]/gi, '') + '-' + randomNumber;
-  // const newName = name.replace(/\s/g, '') + '-' + randomNumber;
   return newName;
 }
 
@@ -49,41 +48,72 @@ export default function Login() {
   const user = auth.currentUser;
 
   async function handleSignIn() {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch {
+      toast('Something went wrong, try again..');
+    }
+
+    const userIDs = [];
+    const querySnapshot = await getDocs(collection(db, 'users'));
+    querySnapshot.forEach((doc) => {
+      userIDs.push(doc.id);
+    });
+
+    if (user) {
+      if (!userIDs.includes(getAuth().currentUser.uid)) {
+        await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
+          displayName: getAuth().currentUser.displayName,
+          username: generateUsername(getAuth().currentUser.displayName),
+          profilePicURL: getAuth().currentUser.photoURL,
+          newUser: true,
+        });
+      }
+    }
+
     if (user) {
       setIsLoading(true);
       setTimeout(() => {
         router.push('/Home');
       }, 2000);
-    } else {
-      const provider = new GoogleAuthProvider();
-      try {
-        await signInWithPopup(auth, provider);
-      } catch {
-        toast('Something went wrong, try again..');
-      }
-
-      const userIDs = [];
-      const querySnapshot = await getDocs(collection(db, 'users'));
-      querySnapshot.forEach((doc) => {
-        userIDs.push(doc.id);
-      });
-
-      if (auth.currentUser) {
-        if (!userIDs.includes(getAuth().currentUser.uid)) {
-          await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
-            displayName: getAuth().currentUser.displayName,
-            username: generateUsername(getAuth().currentUser.displayName),
-            profilePicURL: getAuth().currentUser.photoURL,
-            newUser: true,
-          });
-        }
-      }
-
-      setIsLoading(true);
-      setTimeout(() => {
-        router.push('/Home');
-      }, 2000);
     }
+
+    // if (user) {
+    //   setIsLoading(true);
+    //   setTimeout(() => {
+    //     router.push('/Home');
+    //   }, 2000);
+    // } else {
+    //   const provider = new GoogleAuthProvider();
+    //   try {
+    //     await signInWithPopup(auth, provider);
+    //   } catch {
+    //     toast('Something went wrong, try again..');
+    //   }
+
+    //   const userIDs = [];
+    //   const querySnapshot = await getDocs(collection(db, 'users'));
+    //   querySnapshot.forEach((doc) => {
+    //     userIDs.push(doc.id);
+    //   });
+
+    //   if (auth.currentUser) {
+    //     if (!userIDs.includes(getAuth().currentUser.uid)) {
+    //       await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
+    //         displayName: getAuth().currentUser.displayName,
+    //         username: generateUsername(getAuth().currentUser.displayName),
+    //         profilePicURL: getAuth().currentUser.photoURL,
+    //         newUser: true,
+    //       });
+    //     }
+    //   }
+
+    //   setIsLoading(true);
+    //   setTimeout(() => {
+    //     router.push('/Home');
+    //   }, 2000);
+    // }
   }
 
   return (

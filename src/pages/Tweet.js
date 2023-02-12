@@ -8,7 +8,15 @@ import {
   doc,
   collection,
   serverTimestamp,
+  updateDoc,
 } from 'firebase/firestore';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from 'firebase/storage';
 
 import { RxImage } from 'react-icons/rx';
 import {
@@ -25,6 +33,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 export default function Tweet() {
   const [currentUser, setCurrentUser] = useState('');
   const [input, setInput] = useState('');
+  const [inputImage, setInputImage] = useState(null);
   const [inputLength, setInputLength] = useState(0);
 
   const auth = getAuth();
@@ -48,10 +57,57 @@ export default function Tweet() {
   }
 
   async function handleTweet() {
+    if (inputImage !== null) {
+      const randomNumber = Math.floor(Math.random() * 900) + 1;
+      const file = inputImage;
+      console.log(file);
+      const localfileBlob = URL.createObjectURL(file);
+      const storage = getStorage();
+      const storageRef = ref(storage, `${randomNumber}-${file.name}`);
+
+      uploadBytes(storageRef, file);
+
+      const fileSnapshot = await uploadBytesResumable(
+        storageRef,
+        localfileBlob
+      );
+      console.log(fileSnapshot.metadata.fullPath);
+      const imageDownloadURL = await getDownloadURL(storageRef);
+
+      await addDoc(collection(db, 'all-tweets'), {
+        userID: getAuth().currentUser.uid,
+        message: input,
+        timestamp: serverTimestamp(),
+        imageURL: imageDownloadURL.toString(),
+        likes: 0,
+        liked: [],
+        bookmarked: [],
+      }).then(async function (docRef) {
+        const updateRef = doc(db, 'all-tweets', docRef.id);
+        await updateDoc(updateRef, {
+          id: docRef.id,
+        });
+      });
+
+      setInputImage(null);
+      setInput('');
+      setInputLength(0);
+
+      return;
+    }
+
     await addDoc(collection(db, 'all-tweets'), {
       userID: getAuth().currentUser.uid,
       message: input,
       timestamp: serverTimestamp(),
+      likes: 0,
+      liked: [],
+      bookmarked: [],
+    }).then(async function (docRef) {
+      const updateRef = doc(db, 'all-tweets', docRef.id);
+      await updateDoc(updateRef, {
+        id: docRef.id,
+      });
     });
 
     toast.info('Your Tweet was sent', {
@@ -68,8 +124,12 @@ export default function Tweet() {
     setInputLength(0);
   }
 
+  async function handleImageUpload(file) {
+    setInputImage(file);
+  }
+
   return (
-    <div className="flex  border-gray-800 p-3 text-blue-500 w-[30em] justify-start">
+    <div className="flex  border-gray-800 p-3 text-blue-500 w-[40em] justify-start">
       <img
         src={currentUser.profilePicURL}
         alt="profile-picture"
@@ -77,16 +137,23 @@ export default function Tweet() {
       />
       <div className="w-full">
         <div>
-          <div className="flex items-center text-sm mb-4 border border-gray-500 rounded-full px-2 cursor-not-allowed w-24 justify-center">
+          <div className="flex items-center text-sm mb-4 border  border-gray-500 rounded-full px-2 cursor-not-allowed w-24 justify-center">
             <p className="font-bold">Everyone</p>
             <IoIosArrowDown />
           </div>
           <input
             value={input}
-            className=" bg-black outline-none text-white pt-3 pb-5 w-full"
+            className=" bg-black text-white outline-none pt-1 pb-5 w-full placeholder:text-xl placeholder:text-gray-500"
             placeholder="What's happening?"
             onChange={handleChange}
           />
+          {!inputImage ? null : (
+            <img
+              alt="uploaded-image-preview"
+              src={URL.createObjectURL(inputImage)}
+              className="rounded mb-2 mx-h-80"
+            />
+          )}
           <div className="flex justify-between">
             <div className="flex items-center gap-1 mb-1 cursor-not-allowed">
               <BsGlobe2 className="text-xs" />
@@ -95,16 +162,25 @@ export default function Tweet() {
             <p className="text-sm font-light">{inputLength} / 140</p>
           </div>
         </div>
-        <hr class="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"></hr>
+        <hr className="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         <div className="flex justify-between">
           <div className="flex text-xl gap-3 justify-between items-center z-1">
-            <RxImage />
+            <label>
+              <RxImage />
+              <input
+                type="file"
+                name="myfile"
+                className="hidden"
+                onChange={(e) => setInputImage(e.target.files[0])}
+              />
+            </label>
             <AiOutlineGif className="opacity-40 cursor-not-allowed" />
             <AiOutlineSmile className="opacity-40 cursor-not-allowed" />
             <TbListDetails className="opacity-40 cursor-not-allowed" />
             <AiOutlineCalendar className="opacity-40 cursor-not-allowed" />
             <TfiLocationPin className="opacity-40 cursor-not-allowed" />
           </div>
+
           <button
             disabled={inputLength < 1}
             onClick={handleTweet}
