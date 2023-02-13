@@ -9,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        media: '1166px',
+      },
       boxShadow: {
         '3xl': '0 0 15px 0px rgb(255 255 255 / 0.5)',
       },

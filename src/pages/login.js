@@ -1,34 +1,12 @@
-import {
-  getAuth,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  setPersistence,
-  signInWithRedirect,
-  inMemoryPersistence,
-  signOut,
-} from 'firebase/auth';
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  query,
-  orderBy,
-  limit,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-  doc,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { collection, getDocs, setDoc, doc } from 'firebase/firestore';
 
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { db } from './firebase-config';
-import LoadingScreen from './LoadingScreen';
+import LoadingScreen from '../Components/LoadingScreen';
 import Logo from '@/images/twitter-logo-white.png';
 
 import { FcGoogle } from 'react-icons/fc';
@@ -41,7 +19,7 @@ function generateUsername(name) {
   return newName;
 }
 
-export default function Login() {
+export default function Login({ setLogout }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const auth = getAuth();
@@ -53,6 +31,7 @@ export default function Login() {
       await signInWithPopup(auth, provider);
     } catch {
       toast('Something went wrong, try again..');
+      return;
     }
 
     const userIDs = [];
@@ -72,12 +51,11 @@ export default function Login() {
       }
     }
 
-    if (user) {
-      setIsLoading(true);
-      setTimeout(() => {
-        router.push('/Home');
-      }, 2000);
-    }
+    setIsLoading(true);
+    setTimeout(() => {
+      router.push('/Home');
+      setLogout(false);
+    }, 2000);
 
     // if (user) {
     //   setIsLoading(true);
@@ -117,7 +95,7 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-gray-800 text-white h-screen flex justify-center items-center">
+    <div className="bg-gray-800 text-white h-screen w-screen flex justify-center items-center">
       {isLoading ? (
         <LoadingScreen />
       ) : (

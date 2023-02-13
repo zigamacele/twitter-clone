@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { router } from 'next/router';
 import {
   getDocs,
   collection,
@@ -6,7 +7,7 @@ import {
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
-import { db } from './firebase-config';
+import { db } from '../pages/firebase-config';
 import { getAuth } from 'firebase/auth';
 import { Popover, Transition } from '@headlessui/react';
 
@@ -16,8 +17,9 @@ import { BsThreeDots, BsBookmarkCheck, BsBookmarkDash } from 'react-icons/bs';
 import { BiUserPlus } from 'react-icons/bi';
 import { AiOutlineDelete } from 'react-icons/ai';
 
-export default function DisplayTweet({ tweet }) {
+export default function DisplayTweet({ tweet, reload, setReload }) {
   const [tweetOwner, setTweetOwner] = useState('');
+  const auth = getAuth();
 
   useEffect(() => {
     getDisplayName(tweet.userID, tweet);
@@ -69,6 +71,8 @@ export default function DisplayTweet({ tweet }) {
         liked: tweetRemoveUID,
       });
     }
+
+    setReload(!reload);
   }
 
   async function handleBookmark() {
@@ -88,15 +92,23 @@ export default function DisplayTweet({ tweet }) {
         bookmarked: tweetRemoveUID,
       });
     }
+
+    setReload(!reload);
   }
 
   async function handleDelete() {
     const tweetID = tweet.id;
     await deleteDoc(doc(db, 'all-tweets', tweetID));
+    setReload(!reload);
   }
 
   return (
-    <div className="flex border border-gray-800 px-3 py-3 w-[40em]">
+    <div
+      onClick={() => {
+        router.push(`/tweet/${tweet.id}`);
+      }}
+      className="flex border border-gray-800 px-3 py-3 w-[35em] cursor-pointer hover:bg-gray-900"
+    >
       <img
         src={tweetOwner.profilePicURL}
         alt="profile-picture"
@@ -115,14 +127,16 @@ export default function DisplayTweet({ tweet }) {
                   <BsThreeDots />
                 </Popover.Button>
                 <Popover.Panel className="absolute flex flex-col z-50 bg-black rounded-xl shadow-3xl  ">
-                  <div className="flex items-center gap-1 font-bold hover:bg-gray-800 pl-4 pr-10 pt-2 pb-1 cursor-pointer">
-                    <BiUserPlus className="text-xl" />
-                    <p className="">Follow {tweetOwner.displayName}</p>
-                  </div>
+                  {tweet.userID === auth.currentUser.uid ? null : (
+                    <div className="flex items-center gap-1 font-bold hover:bg-gray-800 pl-4 pr-10 pt-2 cursor-pointer">
+                      <BiUserPlus className="text-xl" />
+                      <p className="">Follow {tweetOwner.displayName}</p>
+                    </div>
+                  )}
                   {!tweet.bookmarked.includes(getAuth().currentUser.uid) ? (
                     <div
                       onClick={handleBookmark}
-                      className="flex items-center gap-2 font-bold pl-4 pr-10 hover:bg-gray-800 pt-1 pb-1 cursor-pointer"
+                      className="flex items-center gap-2 font-bold my-1 pl-4 pr-10 hover:bg-gray-800 pt-1 pb-1 cursor-pointer"
                     >
                       <BsBookmarkCheck />
                       <p>Bookmark</p>
@@ -136,14 +150,15 @@ export default function DisplayTweet({ tweet }) {
                       <p>Remove Bookmark</p>
                     </div>
                   )}
-
-                  <div
-                    onClick={handleDelete}
-                    className="flex items-center gap-2 font-bold pl-4 pr-10 pb-2 hover:bg-gray-800 pt-1 cursor-pointer"
-                  >
-                    <AiOutlineDelete />
-                    <p>Delete</p>
-                  </div>
+                  {tweet.userID !== auth.currentUser.uid ? null : (
+                    <div
+                      onClick={handleDelete}
+                      className="flex items-center gap-2 font-bold pl-4 pr-10 pb-2 hover:bg-gray-800 pt-1 cursor-pointer"
+                    >
+                      <AiOutlineDelete />
+                      <p>Delete</p>
+                    </div>
+                  )}
                 </Popover.Panel>
               </Popover>
             </div>
@@ -164,7 +179,7 @@ export default function DisplayTweet({ tweet }) {
               <img
                 src={tweetOwner.imageURL}
                 className="h-m-80"
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1"
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em]"
               />
             </Popover.Panel>
           </Popover>
@@ -174,26 +189,29 @@ export default function DisplayTweet({ tweet }) {
           <p>{tweet.timestamp.toDate().toDateString()}</p>
         </div>
         <div className="flex text-gray-400 gap-10">
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-3 hover:text-blue-400">
             <FaRegComment />
             <p>0</p>
           </div>
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-3 cursor-not-allowed text-gray-600">
             <FaRetweet />
             <p>0</p>
           </div>
-          <div className="flex justify-center items-center gap-4">
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike();
+            }}
+            className="flex justify-center items-center gap-3 hover:text-red-500"
+          >
             {tweet.liked.includes(getAuth().currentUser.uid) ? (
-              <FaHeart onClick={handleLike} className="text-red-500" />
+              <FaHeart className="text-red-500" />
             ) : (
-              <FaRegHeart
-                onClick={handleLike}
-                className="hover:text-red-500 "
-              />
+              <FaRegHeart onClick={handleLike} />
             )}
             <p>{tweet.likes}</p>
           </div>
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-center items-center gap-4 cursor-not-allowed text-gray-600">
             <MdIosShare />
           </div>
         </div>

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Popover } from '@headlessui/react';
 import { router } from 'next/router';
 import Image from 'next/image';
-import LoadingScreen from '@/pages/LoadingScreen';
+import LoadingScreen from '@/Components/LoadingScreen';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { onSnapshot, doc, serverTimestamp } from 'firebase/firestore';
+import { onSnapshot, doc } from 'firebase/firestore';
 import { db } from '@/pages/firebase-config';
 import Logo from '@/images/twitter-logo-white.png';
+import Tweet from '@/Components/Tweet';
 
 import { FiBookmark, FiLogOut } from 'react-icons/fi';
 import { BiUser, BiBell } from 'react-icons/bi';
@@ -15,19 +16,18 @@ import { TbSearch, TbDotsCircleHorizontal, TbMail } from 'react-icons/tb';
 import { BsCardChecklist } from 'react-icons/bs';
 import { RiQuillPenLine, RiCloseLine } from 'react-icons/ri';
 import { BsThreeDots } from 'react-icons/bs';
-import Tweet from '@/pages/Tweet';
 
-export default function Navigation() {
+export default function Navigation({
+  index,
+  setIndex,
+  reload,
+  setReload,
+  setLogout,
+}) {
   const [currentUser, setCurrentUser] = useState('');
   const [loading, setLoading] = useState();
   const [newTweet, setNewTweet] = useState(false);
   const auth = getAuth();
-  // const pullCurrentUser = onSnapshot(
-  //   doc(db, 'users', getAuth().currentUser.uid),
-  //   (doc) => {
-  //     setCurrentUser(doc.data());
-  //   }
-  // );
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -41,11 +41,11 @@ export default function Navigation() {
   });
 
   return (
-    <div className="h-screen flex flex-col justify-between bg-black text-white">
+    <div className="h-screen flex flex-col justify-between items-center w-16 mr-1">
       {!newTweet ? null : (
         <div
           onClick={() => setNewTweet(false)}
-          className="absolute absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-700 bg-opacity-80"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-700 bg-opacity-80"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -55,7 +55,7 @@ export default function Navigation() {
               className="text-2xl font-light mb-2 cursor-pointer"
               onClick={() => setNewTweet(false)}
             />
-            <Tweet />
+            <Tweet reload={reload} setReload={setReload} />
           </div>
         </div>
       )}
@@ -64,53 +64,89 @@ export default function Navigation() {
           <LoadingScreen />
         </div>
       ) : null}
-      <div className=" flex flex-col gap-8 mr-12 my-4">
-        <Image src={Logo} alt="twitter-logo" className="w-7" />
-        <div className="flex flex-col gap-5 text-xl font-light">
-          <div className="flex items-center gap-5 font-bold bg-red-500">
-            <div className=" flex items-center gap-5 bg-green-500">
-              <AiOutlineHome />
-              <p>Home</p>
+      <div className=" flex flex-col gap-8 xl:mr-44 my-4 justify-center">
+        <Image src={Logo} alt="twitter-logo" className="w-7 ml-2 xl:ml-3" />
+        <div className="flex flex-col gap-2 text-[22px] font-light">
+          <div
+            onClick={() => {
+              router.push('/Home');
+              setIndex('Home');
+            }}
+            className="flex items-center gap-5 cursor-pointer "
+          >
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <AiOutlineHome className="text-2xl" />
+              <p
+                style={{ fontWeight: index === 'Home' ? 700 : 400 }}
+                className="hidden xl:block"
+              >
+                Home
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
-            <TbSearch />
-            <p>Explore</p>
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <TbSearch className="text-2xl" />
+              <p className="hidden xl:block">Explore</p>
+            </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
-            <BiBell />
-            <p>Notification</p>
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <BiBell className="text-2xl" />
+              <p className="hidden xl:block">Notification</p>
+            </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
-            <TbMail />
-            <p>Messages</p>
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <TbMail className="text-2xl" />
+              <p className="hidden xl:block">Messages</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <FiBookmark />
-            <p>Bookmarks</p>
+          <div
+            onClick={() => {
+              router.push('/Bookmarks');
+              setIndex('Bookmarks');
+            }}
+            className="flex items-center gap-4 cursor-pointer"
+          >
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <FiBookmark className="text-2xl" />
+              <p
+                style={{ fontWeight: index === 'Bookmarks' ? 700 : 400 }}
+                className="hidden xl:block"
+              >
+                Bookmarks
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
-            <BsCardChecklist />
-            <p>Lists</p>
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <BsCardChecklist className="text-2xl" />
+              <p className="hidden xl:block">Lists</p>
+            </div>
           </div>
-          <div className="flex items-center gap-4">
-            <BiUser />
-            <p>Profile</p>
+          <div className="flex items-center gap-4 cursor-pointer">
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <BiUser className="text-2xl" />
+              <p className="hidden xl:block">Profile</p>
+            </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
-            <TbDotsCircleHorizontal />
-            <p>More</p>
+            <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
+              <TbDotsCircleHorizontal className="text-2xl" />
+              <p className="hidden xl:block">More</p>
+            </div>
           </div>
           <div
             onClick={() => setNewTweet(true)}
-            className="flex items-center gap-4 font-bold text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-full  self-center py-3 px-20 text-base cursor-pointer"
+            className="mt-3 xl:flex xl:items-center gap-4 font-bold text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-full py-3 sm:px-3 xl:px-24 text-base cursor-pointer w-10 mr-4 xl:justify-center"
           >
-            {/* <RiQuillPenLine /> */}
-            <button>Tweet</button>
+            <RiQuillPenLine className="xl:hidden" />
+            <button className="hidden xl:inline">Tweet</button>
           </div>
         </div>
       </div>
-      <div className="flex justify-between w-52 mr-6 my-4 items-center">
+      <div className="flex sm:flex-col xl:flex-row sm:gap-2 xl:justify-between xl:w-52 mr-1 my-4 items-center xl:mr-48 ">
         <div className="flex">
           <div>
             <img
@@ -120,13 +156,17 @@ export default function Navigation() {
             />
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-bold">{currentUser.displayName}</p>
-            <p className="text-l text-gray-400">@{currentUser.username}</p>
+            <p className="text-sm font-bold xl:inline hidden">
+              {currentUser.displayName}
+            </p>
+            <p className="text-l text-gray-400 xl:inline hidden">
+              @{currentUser.username}
+            </p>
           </div>
         </div>
         <Popover>
           <Popover.Button>
-            <BsThreeDots />
+            <BsThreeDots className="sm:mr-3" />
           </Popover.Button>
           <Popover.Panel className="absolute flex bottom-[70px] flex-col b-50 z-50 bg-black rounded-xl shadow-3xl  ">
             <div
@@ -135,9 +175,11 @@ export default function Navigation() {
                 setTimeout(() => {
                   signOut(auth);
                   router.push('/login');
+                  setLogout(true);
+                  setLoading(false);
                 }, 2000);
               }}
-              className="flex items-center gap-2 font-bold pl-4 pr-16 py-2 pl-2 hover:bg-gray-800 cursor-pointer"
+              className="flex items-center gap-2 font-bold pl-4 pr-16 py-2 hover:bg-gray-800 cursor-pointer"
             >
               <FiLogOut />
               <p>Logout</p>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { db } from './firebase-config';
+import { db } from '../pages/firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useRouter, router } from 'next/router';
 import {
   onSnapshot,
   addDoc,
@@ -30,14 +31,16 @@ import { TfiLocationPin } from 'react-icons/tfi';
 import { BsGlobe2 } from 'react-icons/bs';
 import { IoIosArrowDown } from 'react-icons/io';
 
-export default function Tweet() {
+export default function Tweet({ reload, setReload }) {
   const [currentUser, setCurrentUser] = useState('');
   const [input, setInput] = useState('');
   const [inputImage, setInputImage] = useState(null);
   const [inputLength, setInputLength] = useState(0);
-
+  const router = useRouter();
+  const tweetID = router.query.tweet;
   const auth = getAuth();
 
+  //!!REMOVE THIS??
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const pullCurrentUser = onSnapshot(
@@ -82,6 +85,7 @@ export default function Tweet() {
         likes: 0,
         liked: [],
         bookmarked: [],
+        replied: tweetID !== undefined ? tweetID : null,
       }).then(async function (docRef) {
         const updateRef = doc(db, 'all-tweets', docRef.id);
         await updateDoc(updateRef, {
@@ -92,6 +96,7 @@ export default function Tweet() {
       setInputImage(null);
       setInput('');
       setInputLength(0);
+      setReload(!reload);
 
       return;
     }
@@ -103,6 +108,7 @@ export default function Tweet() {
       likes: 0,
       liked: [],
       bookmarked: [],
+      replied: tweetID !== undefined ? tweetID : null,
     }).then(async function (docRef) {
       const updateRef = doc(db, 'all-tweets', docRef.id);
       await updateDoc(updateRef, {
@@ -122,6 +128,7 @@ export default function Tweet() {
     });
     setInput('');
     setInputLength(0);
+    setReload(!reload);
   }
 
   async function handleImageUpload(file) {
@@ -129,7 +136,7 @@ export default function Tweet() {
   }
 
   return (
-    <div className="flex  border-gray-800 p-3 text-blue-500 w-[40em] justify-start">
+    <div className="flex  border-gray-800 p-3 text-blue-500 w-[35em] justify-start">
       <img
         src={currentUser.profilePicURL}
         alt="profile-picture"
@@ -151,7 +158,8 @@ export default function Tweet() {
             <img
               alt="uploaded-image-preview"
               src={URL.createObjectURL(inputImage)}
-              className="rounded mb-2 mx-h-80"
+              className="rounded mb-2 mx-h-80 cursor-pointer"
+              onClick={() => setInputImage(null)}
             />
           )}
           <div className="flex justify-between">
@@ -164,8 +172,8 @@ export default function Tweet() {
         </div>
         <hr className="h-px my-2 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         <div className="flex justify-between">
-          <div className="flex text-xl gap-3 justify-between items-center z-1">
-            <label>
+          <div className="flex text-xl gap-3 justify-between items-center z-1 ">
+            <label className="cursor-pointer">
               <RxImage />
               <input
                 type="file"
@@ -174,11 +182,11 @@ export default function Tweet() {
                 onChange={(e) => setInputImage(e.target.files[0])}
               />
             </label>
-            <AiOutlineGif className="opacity-40 cursor-not-allowed" />
-            <AiOutlineSmile className="opacity-40 cursor-not-allowed" />
-            <TbListDetails className="opacity-40 cursor-not-allowed" />
-            <AiOutlineCalendar className="opacity-40 cursor-not-allowed" />
-            <TfiLocationPin className="opacity-40 cursor-not-allowed" />
+            <AiOutlineGif className="cursor-not-allowed text-blue-900" />
+            <AiOutlineSmile className="cursor-not-allowed text-blue-900" />
+            <TbListDetails className="cursor-not-allowed text-blue-900" />
+            <AiOutlineCalendar className="cursor-not-allowed text-blue-900" />
+            <TfiLocationPin className="cursor-not-allowed text-blue-900" />
           </div>
 
           <button
