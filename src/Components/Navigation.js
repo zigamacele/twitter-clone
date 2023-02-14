@@ -41,11 +41,11 @@ export default function Navigation({
   });
 
   return (
-    <div className="h-screen flex flex-col justify-between items-center w-16 mr-1">
+    <div className="h-screen flex flex-col justify-between  w-[20em] mr-1">
       {!newTweet ? null : (
         <div
           onClick={() => setNewTweet(false)}
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-700 bg-opacity-80"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-700 bg-opacity-80 z-40"
         >
           <div
             onClick={(e) => e.stopPropagation()}
@@ -64,13 +64,14 @@ export default function Navigation({
           <LoadingScreen />
         </div>
       ) : null}
-      <div className=" flex flex-col gap-8 xl:mr-44 my-4 justify-center">
-        <Image src={Logo} alt="twitter-logo" className="w-7 ml-2 xl:ml-3" />
+      <div className=" flex flex-col gap-8 xl:mr-44 my-4 justify-center items-end w-full">
         <div className="flex flex-col gap-2 text-[22px] font-light">
+          <Image src={Logo} alt="twitter-logo" className="w-7 ml-2 xl:ml-3" />
+
           <div
             onClick={() => {
-              router.push('/Home');
               setIndex('Home');
+              router.push('/Home');
             }}
             className="flex items-center gap-5 cursor-pointer "
           >
@@ -125,10 +126,22 @@ export default function Navigation({
               <p className="hidden xl:block">Lists</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 cursor-pointer">
+          <div
+            onClick={() => {
+              router.push(`/user/${currentUser.username}`);
+              setIndex('userTweets');
+              setReload(!reload);
+            }}
+            className="flex items-center gap-4 cursor-pointer"
+          >
             <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
               <BiUser className="text-2xl" />
-              <p className="hidden xl:block">Profile</p>
+              <p
+                style={{ fontWeight: index === 'Profile' ? 700 : 400 }}
+                className="hidden xl:block"
+              >
+                Profile
+              </p>
             </div>
           </div>
           <div className="flex items-center gap-4 cursor-not-allowed">
@@ -146,13 +159,13 @@ export default function Navigation({
           </div>
         </div>
       </div>
-      <div className="flex sm:flex-col xl:flex-row sm:gap-2 xl:justify-between xl:w-52 mr-1 my-4 items-center xl:mr-48 ">
+      <div className="flex sm:flex-col xl:flex-row sm:gap-2 xl:justify-between xl:w-52 mr-1 my-4 items-center self-end">
         <div className="flex">
           <div>
             <img
               src={currentUser.profilePicURL}
               alt="profile-picture"
-              className="w-10 rounded-full mr-3"
+              className="w-10 h-10 object-cover rounded-full mr-3"
             />
           </div>
           <div className="flex flex-col">
@@ -171,13 +184,10 @@ export default function Navigation({
           <Popover.Panel className="absolute flex bottom-[70px] flex-col b-50 z-50 bg-black rounded-xl shadow-3xl  ">
             <div
               onClick={() => {
-                setLoading(true);
-                setTimeout(() => {
-                  signOut(auth);
-                  router.push('/login');
-                  setLogout(true);
-                  setLoading(false);
-                }, 2000);
+                setLogout(true);
+                // setLoading(true);
+                signOut(auth);
+                router.push('/login');
               }}
               className="flex items-center gap-2 font-bold pl-4 pr-16 py-2 hover:bg-gray-800 cursor-pointer"
             >

@@ -19,14 +19,17 @@ import { AiOutlineDelete } from 'react-icons/ai';
 
 export default function DisplayTweet({ tweet, reload, setReload }) {
   const [tweetOwner, setTweetOwner] = useState('');
+  const [commentCount, setCommentCount] = useState(0);
   const auth = getAuth();
 
   useEffect(() => {
     getDisplayName(tweet.userID, tweet);
+    handleCommentCount();
   }, []);
 
   useEffect(() => {
     getDisplayName(tweet.userID, tweet);
+    handleCommentCount();
   }, [tweet]);
 
   async function getDisplayName(userID, tweet) {
@@ -102,6 +105,19 @@ export default function DisplayTweet({ tweet, reload, setReload }) {
     setReload(!reload);
   }
 
+  async function handleCommentCount() {
+    const repliedComments = [];
+    const allTweets = collection(db, 'all-tweets');
+
+    const querySnapshot = await getDocs(allTweets);
+    querySnapshot.forEach((doc) => {
+      if (tweet.id === doc.data().replied) {
+        repliedComments.push(doc.data().id);
+      }
+    });
+    setCommentCount(repliedComments.length);
+  }
+
   return (
     <div
       onClick={() => {
@@ -112,17 +128,27 @@ export default function DisplayTweet({ tweet, reload, setReload }) {
       <img
         src={tweetOwner.profilePicURL}
         alt="profile-picture"
-        className="rounded rounded-full h-10 mr-3"
+        className="rounded rounded-full h-10 w-10 object-cover mr-3"
+        onClick={(e) => {
+          e.stopPropagation();
+          router.push(`/user/${tweetOwner.username}`);
+        }}
       />
       <div className="flex flex-col w-full">
         <div className="flex">
           <div className="w-full flex justify-between items-center">
-            <div className="flex gap-1 items-center">
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                router.push(`/user/${tweetOwner.username}`);
+              }}
+              className="flex gap-1 items-center"
+            >
               <p className="font-bold">{tweetOwner.displayName}</p>
               <p className="text-gray-400">@{tweetOwner.username}</p>
             </div>
             <div>
-              <Popover>
+              <Popover onClick={(e) => e.stopPropagation()}>
                 <Popover.Button>
                   <BsThreeDots />
                 </Popover.Button>
@@ -191,7 +217,7 @@ export default function DisplayTweet({ tweet, reload, setReload }) {
         <div className="flex text-gray-400 gap-10">
           <div className="flex justify-center items-center gap-3 hover:text-blue-400">
             <FaRegComment />
-            <p>0</p>
+            <p>{commentCount}</p>
           </div>
           <div className="flex justify-center items-center gap-3 cursor-not-allowed text-gray-600">
             <FaRetweet />

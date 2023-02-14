@@ -76,7 +76,7 @@ export default function SelectUsername() {
   return (
     <div>
       {newUser ? (
-        <div className="absolute w-screen h-screen bg-gray-700 bg-opacity-80">
+        <div className="absolute w-screen h-screen bg-gray-700 bg-opacity-80 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center bg-black  p-10 rounded-xl gap-1 text-white">
             <Image src={Logo} className="w-8 self-center mb-5" alt="logo" />
             <p className="text-3xl font-bold mb-1">What should we call you?</p>

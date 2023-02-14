@@ -1,7 +1,7 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, getDocs, setDoc, doc } from 'firebase/firestore';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -40,15 +40,14 @@ export default function Login({ setLogout }) {
       userIDs.push(doc.id);
     });
 
-    if (user) {
-      if (!userIDs.includes(getAuth().currentUser.uid)) {
-        await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
-          displayName: getAuth().currentUser.displayName,
-          username: generateUsername(getAuth().currentUser.displayName),
-          profilePicURL: getAuth().currentUser.photoURL,
-          newUser: true,
-        });
-      }
+    if (!userIDs.includes(getAuth().currentUser.uid)) {
+      await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
+        displayName: getAuth().currentUser.displayName,
+        uid: getAuth().currentUser.uid,
+        username: generateUsername(getAuth().currentUser.displayName),
+        profilePicURL: getAuth().currentUser.photoURL,
+        newUser: true,
+      });
     }
 
     setIsLoading(true);
@@ -56,42 +55,6 @@ export default function Login({ setLogout }) {
       router.push('/Home');
       setLogout(false);
     }, 2000);
-
-    // if (user) {
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     router.push('/Home');
-    //   }, 2000);
-    // } else {
-    //   const provider = new GoogleAuthProvider();
-    //   try {
-    //     await signInWithPopup(auth, provider);
-    //   } catch {
-    //     toast('Something went wrong, try again..');
-    //   }
-
-    //   const userIDs = [];
-    //   const querySnapshot = await getDocs(collection(db, 'users'));
-    //   querySnapshot.forEach((doc) => {
-    //     userIDs.push(doc.id);
-    //   });
-
-    //   if (auth.currentUser) {
-    //     if (!userIDs.includes(getAuth().currentUser.uid)) {
-    //       await setDoc(doc(db, 'users', `${getAuth().currentUser.uid}`), {
-    //         displayName: getAuth().currentUser.displayName,
-    //         username: generateUsername(getAuth().currentUser.displayName),
-    //         profilePicURL: getAuth().currentUser.photoURL,
-    //         newUser: true,
-    //       });
-    //     }
-    //   }
-
-    //   setIsLoading(true);
-    //   setTimeout(() => {
-    //     router.push('/Home');
-    //   }, 2000);
-    // }
   }
 
   return (

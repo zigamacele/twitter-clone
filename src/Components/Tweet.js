@@ -40,7 +40,6 @@ export default function Tweet({ reload, setReload }) {
   const tweetID = router.query.tweet;
   const auth = getAuth();
 
-  //!!REMOVE THIS??
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const pullCurrentUser = onSnapshot(
@@ -63,7 +62,6 @@ export default function Tweet({ reload, setReload }) {
     if (inputImage !== null) {
       const randomNumber = Math.floor(Math.random() * 900) + 1;
       const file = inputImage;
-      console.log(file);
       const localfileBlob = URL.createObjectURL(file);
       const storage = getStorage();
       const storageRef = ref(storage, `${randomNumber}-${file.name}`);
@@ -74,7 +72,6 @@ export default function Tweet({ reload, setReload }) {
         storageRef,
         localfileBlob
       );
-      console.log(fileSnapshot.metadata.fullPath);
       const imageDownloadURL = await getDownloadURL(storageRef);
 
       await addDoc(collection(db, 'all-tweets'), {
@@ -82,6 +79,7 @@ export default function Tweet({ reload, setReload }) {
         message: input,
         timestamp: serverTimestamp(),
         imageURL: imageDownloadURL.toString(),
+        mediaTweet: true,
         likes: 0,
         liked: [],
         bookmarked: [],
@@ -140,7 +138,7 @@ export default function Tweet({ reload, setReload }) {
       <img
         src={currentUser.profilePicURL}
         alt="profile-picture"
-        className="h-10 rounded-full mr-3"
+        className="h-10 w-10 object-cover rounded-full mr-3"
       />
       <div className="w-full">
         <div>

@@ -3,7 +3,7 @@ import { ToastContainer } from 'react-toastify';
 import { useState, useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import Navigation from '@/Components/Navigation';
-import Aside from './Aside';
+import Aside from '../Components/Aside';
 
 export default function App({ Component, pageProps }) {
   const [reload, setReload] = useState(true);

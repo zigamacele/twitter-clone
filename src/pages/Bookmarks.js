@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import SelectUsername from '@/Components/SelectUsername';
-import Tweet from '@/Components/Tweet';
 import AllTweets from '../Components/AllTweets';
 
 export default function Bookmarks({ reload, setReload, index }) {
   return (
     <div>
-      <SelectUsername />
       <div className="flex justify-center">
         <div className="border border-gray-800 w-[35em]">
           <p className="sticky top-0 backdrop-blur py-5 px-3 font-bold text-xl border border-gray-800 ">

@@ -1,51 +1,46 @@
-import { useRouter } from 'next/router';
-import {
-  getAuth,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from 'firebase/auth';
-import {
-  getDoc,
-  getFirestore,
-  getDocs,
-  collection,
-  addDoc,
-  query,
-  where,
-  orderBy,
-  limit,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-  doc,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { useRouter, router } from 'next/router';
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { db } from '@/pages/firebase-config';
+import AllTweets from '@/Components/AllTweets';
+import ProfileElement from '@/Components/ProfileElement';
 
-//!! IF getAuth current user === profile => show edit button
-export default function Profile() {
-  const [profile, setProfile] = useState('');
+import { VscArrowLeft } from 'react-icons/vsc';
+
+export default function Profile({ reload, setReload, index, setIndex }) {
   const router = useRouter();
   const username = router.query.username;
 
-  async function findUsername() {
-    const userRef = collection(db, 'users');
-    const q = query(userRef, where('username', '==', `${username}`));
-
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      setProfile(doc.data());
-    });
-  }
-  //findUsername();
-
   return (
-    <div>
-      <img src={profile.profilePicURL} />
-      {profile.displayName} @{profile.username}
+    <div className="flex justify-center">
+      <div className="flex flex-col border border-gray-800 w-[35em]">
+        <div className="flex items-center">
+          <VscArrowLeft
+            className="text-xl ml-4 mr-6 cursor-pointer"
+            onClick={() => {
+              router.push('/Home');
+              setIndex('Home');
+            }}
+          />
+          <p className="sticky top-0 backdrop-blur py-5 px-3 font-bold text-xl  ">
+            Profile
+          </p>
+        </div>
+        <ProfileElement
+          reload={reload}
+          setReload={setReload}
+          index={index}
+          setIndex={setIndex}
+        />
+        <div className="flex flex-col scrollbar-hide">
+          <AllTweets
+            reload={reload}
+            setReload={setReload}
+            index={index}
+            setIndex={setIndex}
+            username={username}
+          />
+        </div>
+      </div>
     </div>
   );
 }
