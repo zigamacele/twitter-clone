@@ -309,8 +309,7 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
               <img
                 alt="profile-picture"
                 src={profile.profilePicURL}
-                className="h-max-80"
-                className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50"
+                className="fixed top-1/2 h-max-80 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50"
               />
             </Animate>
           </Popover.Panel>

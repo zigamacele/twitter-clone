@@ -195,8 +195,7 @@ export default function DisplayTweet({ tweet, reload, setReload, setIndex }) {
             <Popover.Button>
               <img
                 src={tweetOwner.imageURL}
-                className="h-m-80"
-                className="rounded-2xl mb-2 mr-1"
+                className="rounded-2xl mb-2 mr-1 h-max-80"
               />
             </Popover.Button>
             <Popover.Overlay className="fixed inset-0 bg-gray-700 bg-opacity-80 z-50" />
@@ -204,9 +203,8 @@ export default function DisplayTweet({ tweet, reload, setReload, setIndex }) {
               <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
                 <img
                   src={tweetOwner.imageURL}
-                  className="h-max-80"
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50"
-                />{' '}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50 h-max-80"
+                />
               </Animate>
             </Popover.Panel>
           </Popover>

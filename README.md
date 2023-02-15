@@ -19,9 +19,10 @@ Twitter clone built with Next.js, React and Tailwind CSS using Firestore and Clo
 
 - Next.js
 - React
-- Tailwind CSS
 - Firebase
+- Tailwind CSS
 - Headless UI
 - React Icons
 - React-toastify
-- React Spinners
+- React-Spinners
+- React Simple Animate

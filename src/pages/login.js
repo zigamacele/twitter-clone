@@ -105,7 +105,7 @@ export default function Login({ setLogout }) {
               Forgot pasword?
             </button>
             <div className="flex gap-2 mt-10">
-              <p>Don't have an account?</p>
+              <p>Don&apos;t have an account?</p>
               <p className="text-blue-500 cursor-not-allowed">Sign up</p>
             </div>
           </div>
