@@ -1,6 +1,4 @@
-import { Html, Head, Main, NextScript } from 'next/document';
-import Navigation from '@/Components/Navigation';
-import { ToastContainer } from 'react-toastify';
+import { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
   return (

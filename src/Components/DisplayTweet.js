@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { router } from 'next/router';
-import {
-  getDocs,
-  collection,
-  doc,
-  updateDoc,
-  deleteDoc,
-} from 'firebase/firestore';
-import { db } from '../pages/firebase-config';
+import { Popover } from '@headlessui/react';
 import { getAuth } from 'firebase/auth';
-import { Popover, Transition } from '@headlessui/react';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+} from 'firebase/firestore';
+import { router } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { Animate } from 'react-simple-animate';
+import { db } from '../pages/firebase-config';
 
-import { FaRegComment, FaHeart, FaRegHeart, FaRetweet } from 'react-icons/fa';
-import { MdIosShare } from 'react-icons/md';
-import { BsThreeDots, BsBookmarkCheck, BsBookmarkDash } from 'react-icons/bs';
-import { BiUserPlus } from 'react-icons/bi';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { BiUserPlus } from 'react-icons/bi';
+import { BsBookmarkCheck, BsBookmarkDash, BsThreeDots } from 'react-icons/bs';
+import { FaHeart, FaRegComment, FaRegHeart, FaRetweet } from 'react-icons/fa';
+import { MdIosShare } from 'react-icons/md';
 
-export default function DisplayTweet({ tweet, reload, setReload }) {
+export default function DisplayTweet({ tweet, reload, setReload, setIndex }) {
   const [tweetOwner, setTweetOwner] = useState('');
   const [commentCount, setCommentCount] = useState(0);
   const auth = getAuth();
@@ -123,12 +124,12 @@ export default function DisplayTweet({ tweet, reload, setReload }) {
       onClick={() => {
         router.push(`/tweet/${tweet.id}`);
       }}
-      className="flex border border-gray-800 px-3 py-3 w-[35em] cursor-pointer hover:bg-gray-900"
+      className="flex border border-gray-800 px-3 py-3 w-[35em] cursor-pointer hover:bg-gray-900/30"
     >
       <img
         src={tweetOwner.profilePicURL}
         alt="profile-picture"
-        className="rounded rounded-full h-10 w-10 object-cover mr-3"
+        className="rounded rounded-full h-10 w-10 object-cover mr-3 hover:opacity-80"
         onClick={(e) => {
           e.stopPropagation();
           router.push(`/user/${tweetOwner.username}`);
@@ -144,53 +145,51 @@ export default function DisplayTweet({ tweet, reload, setReload }) {
               }}
               className="flex gap-1 items-center"
             >
-              <p className="font-bold">{tweetOwner.displayName}</p>
+              <p className="font-bold hover:underline">
+                {tweetOwner.displayName}
+              </p>
               <p className="text-gray-400">@{tweetOwner.username}</p>
             </div>
-            <div>
+            <div className="relative">
               <Popover onClick={(e) => e.stopPropagation()}>
                 <Popover.Button>
                   <BsThreeDots />
                 </Popover.Button>
-                <Popover.Panel className="absolute flex flex-col z-50 bg-black rounded-xl shadow-3xl  ">
-                  {tweet.userID === auth.currentUser.uid ? null : (
-                    <div className="flex items-center gap-1 font-bold hover:bg-gray-800 pl-4 pr-10 pt-2 cursor-pointer">
-                      <BiUserPlus className="text-xl" />
-                      <p className="">Follow {tweetOwner.displayName}</p>
-                    </div>
-                  )}
-                  {!tweet.bookmarked.includes(getAuth().currentUser.uid) ? (
-                    <div
-                      onClick={handleBookmark}
-                      className="flex items-center gap-2 font-bold my-1 pl-4 pr-10 hover:bg-gray-800 pt-1 pb-1 cursor-pointer"
-                    >
-                      <BsBookmarkCheck />
-                      <p>Bookmark</p>
-                    </div>
-                  ) : (
-                    <div
-                      onClick={handleBookmark}
-                      className="flex items-center gap-2 font-bold pl-4 pr-10 hover:bg-gray-800 pt-1 pb-1 cursor-pointer"
-                    >
-                      <BsBookmarkDash />
-                      <p>Remove Bookmark</p>
-                    </div>
-                  )}
-                  {tweet.userID !== auth.currentUser.uid ? null : (
-                    <div
-                      onClick={handleDelete}
-                      className="flex items-center gap-2 font-bold pl-4 pr-10 pb-2 hover:bg-gray-800 pt-1 cursor-pointer"
-                    >
-                      <AiOutlineDelete />
-                      <p>Delete</p>
-                    </div>
-                  )}
+                <Popover.Panel className="absolute flex flex-col right-10 bottom-8 right-[-3px] bg-black rounded-xl shadow-3xl w-60 p-3 gap-2">
+                  <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
+                    {!tweet.bookmarked.includes(getAuth().currentUser.uid) ? (
+                      <div
+                        onClick={handleBookmark}
+                        className="flex items-center gap-2 font-light cursor-pointer hover:font-bold"
+                      >
+                        <BsBookmarkCheck />
+                        <p>Bookmark</p>
+                      </div>
+                    ) : (
+                      <div
+                        onClick={handleBookmark}
+                        className="flex items-center gap-2 font-light cursor-pointer hover:font-bold"
+                      >
+                        <BsBookmarkDash />
+                        <p>Remove Bookmark</p>
+                      </div>
+                    )}
+                    {tweet.userID !== auth.currentUser.uid ? null : (
+                      <div
+                        onClick={handleDelete}
+                        className="flex items-center gap-2 font-light cursor-pointer hover:font-bold"
+                      >
+                        <AiOutlineDelete />
+                        <p>Delete</p>
+                      </div>
+                    )}
+                  </Animate>
                 </Popover.Panel>
               </Popover>
             </div>
           </div>
         </div>
-        <p className="pt-1 pb-2">{tweet.message}</p>
+        <p className="pt-1 pb-2 break-all">{tweet.message}</p>
         {!tweetOwner.imageURL ? null : (
           <Popover>
             <Popover.Button>
@@ -200,13 +199,15 @@ export default function DisplayTweet({ tweet, reload, setReload }) {
                 className="rounded-2xl mb-2 mr-1"
               />
             </Popover.Button>
-            <Popover.Overlay className="fixed inset-0 bg-gray-700 bg-opacity-80" />
+            <Popover.Overlay className="fixed inset-0 bg-gray-700 bg-opacity-80 z-50" />
             <Popover.Panel>
-              <img
-                src={tweetOwner.imageURL}
-                className="h-m-80"
-                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em]"
-              />
+              <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
+                <img
+                  src={tweetOwner.imageURL}
+                  className="h-max-80"
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50"
+                />{' '}
+              </Animate>
             </Popover.Panel>
           </Popover>
         )}

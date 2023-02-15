@@ -1,34 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import {
-  getAuth,
-  onAuthStateChanged,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-} from 'firebase/auth';
-import {
-  getDoc,
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc,
-  query,
-  where,
-  orderBy,
-  limit,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-  doc,
-  serverTimestamp,
-} from 'firebase/firestore';
-import { db } from '@/pages/firebase-config';
 import Logo from '@/images/twitter-logo-white.png';
+import { db } from '@/pages/firebase-config';
+import { getAuth } from 'firebase/auth';
+import {
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+} from 'firebase/firestore';
 import Image from 'next/image';
 
-export default function SelectUsername() {
+export default function SelectUsername({ reload, setReload }) {
   const [inputValue, setInputValue] = useState('');
   const [newUser, setNewUser] = useState(false);
   const auth = getAuth();
@@ -76,7 +61,7 @@ export default function SelectUsername() {
   return (
     <div>
       {newUser ? (
-        <div className="absolute w-screen h-screen bg-gray-700 bg-opacity-80 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute w-screen h-screen bg-gray-700 bg-opacity-80 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col justify-center bg-black  p-10 rounded-xl gap-1 text-white">
             <Image src={Logo} className="w-8 self-center mb-5" alt="logo" />
             <p className="text-3xl font-bold mb-1">What should we call you?</p>

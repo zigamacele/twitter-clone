@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { Popover } from '@headlessui/react';
-import { router } from 'next/router';
-import Image from 'next/image';
 import LoadingScreen from '@/Components/LoadingScreen';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { onSnapshot, doc } from 'firebase/firestore';
-import { db } from '@/pages/firebase-config';
-import Logo from '@/images/twitter-logo-white.png';
 import Tweet from '@/Components/Tweet';
+import Logo from '@/images/twitter-logo-white.png';
+import { db } from '@/pages/firebase-config';
+import { Popover } from '@headlessui/react';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, onSnapshot } from 'firebase/firestore';
+import Image from 'next/image';
+import { router } from 'next/router';
+import React, { useState } from 'react';
+import { Animate } from 'react-simple-animate';
 
-import { FiBookmark, FiLogOut } from 'react-icons/fi';
-import { BiUser, BiBell } from 'react-icons/bi';
 import { AiOutlineHome } from 'react-icons/ai';
-import { TbSearch, TbDotsCircleHorizontal, TbMail } from 'react-icons/tb';
-import { BsCardChecklist } from 'react-icons/bs';
-import { RiQuillPenLine, RiCloseLine } from 'react-icons/ri';
-import { BsThreeDots } from 'react-icons/bs';
+import { BiBell, BiUser } from 'react-icons/bi';
+import { BsCardChecklist, BsThreeDots } from 'react-icons/bs';
+import { FiBookmark, FiLogOut } from 'react-icons/fi';
+import { RiCloseLine, RiQuillPenLine } from 'react-icons/ri';
+import { TbDotsCircleHorizontal, TbMail, TbSearch } from 'react-icons/tb';
 
 export default function Navigation({
   index,
@@ -41,22 +41,24 @@ export default function Navigation({
   });
 
   return (
-    <div className="h-screen flex flex-col justify-between  w-[20em] mr-1">
+    <div className="h-screen flex flex-col justify-between media:w-[20em] mr-1">
       {!newTweet ? null : (
         <div
           onClick={() => setNewTweet(false)}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-700 bg-opacity-80 z-40"
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center bg-black  pt-6 px-10 pb-10 rounded-xl"
-          >
-            <RiCloseLine
-              className="text-2xl font-light mb-2 cursor-pointer"
-              onClick={() => setNewTweet(false)}
-            />
-            <Tweet reload={reload} setReload={setReload} />
-          </div>
+          <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center bg-black  pt-6 px-10 pb-10 rounded-xl"
+            >
+              <RiCloseLine
+                className="text-2xl font-light mb-2 cursor-pointer"
+                onClick={() => setNewTweet(false)}
+              />
+              <Tweet reload={reload} setReload={setReload} />
+            </div>
+          </Animate>
         </div>
       )}
       {loading ? (
@@ -66,7 +68,11 @@ export default function Navigation({
       ) : null}
       <div className=" flex flex-col gap-8 xl:mr-44 my-4 justify-center items-end w-full">
         <div className="flex flex-col gap-2 text-[22px] font-light">
-          <Image src={Logo} alt="twitter-logo" className="w-7 ml-2 xl:ml-3" />
+          <Image
+            src={Logo}
+            alt="twitter-logo"
+            className="w-7 ml-2 xl:ml-3 mb-2"
+          />
 
           <div
             onClick={() => {
@@ -137,7 +143,15 @@ export default function Navigation({
             <div className="  flex items-center gap-5 hover:bg-gray-800 p-2 xl:pl-3 xl:pr-8 rounded-full">
               <BiUser className="text-2xl" />
               <p
-                style={{ fontWeight: index === 'Profile' ? 700 : 400 }}
+                style={{
+                  fontWeight:
+                    index === 'userTweets' ||
+                    index === 'userMedia' ||
+                    index === 'userLikes' ||
+                    index === 'userReplies'
+                      ? 700
+                      : 400,
+                }}
                 className="hidden xl:block"
               >
                 Profile
@@ -177,25 +191,31 @@ export default function Navigation({
             </p>
           </div>
         </div>
-        <Popover>
-          <Popover.Button>
-            <BsThreeDots className="sm:mr-3" />
-          </Popover.Button>
-          <Popover.Panel className="absolute flex bottom-[70px] flex-col b-50 z-50 bg-black rounded-xl shadow-3xl  ">
-            <div
-              onClick={() => {
-                setLogout(true);
-                // setLoading(true);
-                signOut(auth);
-                router.push('/login');
-              }}
-              className="flex items-center gap-2 font-bold pl-4 pr-16 py-2 hover:bg-gray-800 cursor-pointer"
-            >
-              <FiLogOut />
-              <p>Logout</p>
-            </div>
-          </Popover.Panel>
-        </Popover>
+        <div className="relative">
+          <Popover>
+            <Popover.Button>
+              <BsThreeDots className="sm:mr-3" />
+            </Popover.Button>
+            <Popover.Panel className="absolute flex bottom-12 right-1.5 flex-col b-50 z-50 bg-black rounded-xl shadow-3xl z-10">
+              <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
+                <div
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLogout(true);
+                    // setLoading(true);
+                    signOut(auth);
+                    router.push('/login');
+                  }}
+                  className="flex items-center gap-2 font-bold pl-4 pr-16 py-2 hover:bg-gray-800 cursor-pointer"
+                >
+                  <FiLogOut />
+
+                  <p>Logout</p>
+                </div>
+              </Animate>
+            </Popover.Panel>
+          </Popover>
+        </div>
       </div>
     </div>
   );

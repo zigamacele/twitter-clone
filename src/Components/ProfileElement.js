@@ -1,30 +1,35 @@
-import React, { useState, useEffect, use } from 'react';
-import {
-  getDocs,
-  updateDoc,
-  collection,
-  query,
-  where,
-  doc,
-} from 'firebase/firestore';
+import { db } from '@/pages/firebase-config';
 import { Popover } from '@headlessui/react';
 import { getAuth } from 'firebase/auth';
-import { useRouter } from 'next/router';
-import { db } from '@/pages/firebase-config';
 import {
-  getStorage,
-  uploadBytes,
-  ref,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from 'firebase/firestore';
+import {
   getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { router, useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { Animate } from 'react-simple-animate';
+import BeatLoader from 'react-spinners/BeatLoader';
 
 import { AiOutlineLink } from 'react-icons/ai';
-import { RiCloseLine } from 'react-icons/ri';
 import { MdOutlineAddAPhoto } from 'react-icons/md';
+import { RiCloseLine } from 'react-icons/ri';
 
 export default function ProfileElement({ reload, setReload, index, setIndex }) {
   const [profile, setProfile] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [follow, setFollow] = useState('Follow');
   const [currentUser, setCurrentUser] = useState('');
   const [showEditor, setShowEditor] = useState(false);
   const [profileName, setProfileName] = useState('');
@@ -38,13 +43,25 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
   const username = router.query.username;
 
   useEffect(() => {
-    setReload(!reload);
+    setIndex('userTweets');
+    findUsername();
+    getCurrentUser();
   }, []);
 
   useEffect(() => {
     findUsername();
-    setCurrentUser(auth.currentUser);
+  }, [index]);
+
+  useEffect(() => {
+    findUsername();
+    getCurrentUser();
   }, [reload]);
+
+  async function getCurrentUser() {
+    const currentUserRef = doc(db, 'users', getAuth().currentUser.uid);
+    const docSnap = await getDoc(currentUserRef);
+    setCurrentUser(docSnap.data());
+  }
 
   async function findUsername() {
     const userRef = collection(db, 'users');
@@ -54,11 +71,17 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
     querySnapshot.forEach((doc) => {
       setProfile(doc.data());
       setProfileName(doc.data().displayName);
+
+      if (doc.data().followers.includes(getAuth().currentUser.uid))
+        setFollow('Following');
+      else setFollow('Follow');
     });
   }
 
   async function handleSave() {
-    const updateRef = doc(db, 'users', currentUser.uid);
+    setLoading(true);
+    const updateRef = doc(db, 'users', getAuth().currentUser.uid);
+
     if (inputImage !== null) {
       const randomNumber = Math.floor(Math.random() * 900) + 1;
       const file = inputImage;
@@ -97,7 +120,6 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
         banner: imageDownloadURL,
       });
     }
-    //
 
     await updateDoc(updateRef, {
       displayName: profileName,
@@ -105,10 +127,58 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
       bio: profileBio,
     });
 
+    setLoading(false);
     findUsername();
     setInputBanner(null);
     setInputImage(null);
     setShowEditor(false);
+  }
+
+  async function handleFollow() {
+    setLoading(true);
+
+    //followers
+
+    const followerRef = doc(db, 'users', profile.uid);
+
+    const profileAddUID = [...profile.followers, getAuth().currentUser.uid];
+    const profileRemoveUID = profile.followers.filter(
+      (profile) => profile !== getAuth().currentUser.uid
+    );
+
+    if (!profile.followers.includes(getAuth().currentUser.uid)) {
+      await updateDoc(followerRef, {
+        followers: profileAddUID,
+      });
+    } else {
+      await updateDoc(followerRef, {
+        followers: profileRemoveUID,
+      });
+    }
+    console.log('followers done');
+
+    //following
+
+    const followingRef = doc(db, 'users', getAuth().currentUser.uid);
+
+    const addFollowingUID = [...currentUser.following, profile.uid];
+    const removeFollowingUID = currentUser.following.filter(
+      (p) => p !== profile.uid
+    );
+
+    if (!currentUser.following.includes(profile.uid)) {
+      await updateDoc(followingRef, {
+        following: addFollowingUID,
+      });
+    } else {
+      await updateDoc(followingRef, {
+        following: removeFollowingUID,
+      });
+    }
+
+    setLoading(false);
+    setReload(!reload);
+    setIndex('userTweets');
   }
 
   return (
@@ -125,104 +195,105 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
           }}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-screen h-screen bg-gray-700 bg-opacity-80 z-50"
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-black pt-6 px-5 pb-10 rounded-xl w-[35em] h-[40em]"
-          >
-            <div className="flex justify-between">
-              <div className="flex gap-8 text-xl items-center">
-                <RiCloseLine
-                  className="text-2xl font-light cursor-pointer"
+          <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="flex flex-col absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  bg-black pt-6 px-5 pb-10 rounded-xl w-[35em] h-[40em]"
+            >
+              <div className="flex justify-between">
+                <div className="flex gap-8 text-xl items-center">
+                  <RiCloseLine
+                    className="text-2xl font-light cursor-pointer"
+                    onClick={() => {
+                      setProfileName(profile.displayName);
+                      setProfileBio(profile.bio);
+                      setProfileLocation(profile.location);
+                      setInputBanner(null);
+                      setInputImage(null);
+                      setShowEditor(false);
+                    }}
+                  />
+                  <p className="font-bold">Edit Profile</p>
+                </div>
+                <button
                   onClick={() => {
-                    setProfileName(profile.displayName);
-                    setProfileBio(profile.bio);
-                    setProfileLocation(profile.location);
-                    setInputBanner(null);
-                    setInputImage(null);
-                    setShowEditor(false);
+                    handleSave();
                   }}
-                />
-                <p className="font-bold">Edit Profile</p>
+                  className="text-base font-bold border rounded-full bg-white text-black  py-1 px-4 cursor-pointer hover:bg-gray-300"
+                >
+                  {!loading ? 'Save' : <BeatLoader color="black" size={10} />}
+                </button>
               </div>
-              <button
-                onClick={() => {
-                  handleSave();
-                }}
-                className="text-base font-bold border rounded-full bg-white text-black  py-1 px-4 cursor-pointer hover:bg-gray-300"
-              >
-                Save
-              </button>
-            </div>
-            <div className="flex flex-col gap-5 mt-5 relative">
-              <div
-                style={{
-                  backgroundImage:
-                    inputBanner !== null
-                      ? `url(${URL.createObjectURL(inputBanner)})`
-                      : '',
-                }}
-                className="bg-gray-600 h-40 bg-cover bg-center"
-              ></div>
-              <img
-                src={
-                  inputImage !== null
-                    ? URL.createObjectURL(inputImage)
-                    : profile.profilePicURL
-                }
-                alt="profile-picture"
-                className="absolute top-32 rounded-full h-24 w-24 border-black border-4 object-cover"
-              />
-              <label className="absolute rounded-full bg-gray-800 p-3 cursor-pointer top-[9.6em] left-[1.6em] opacity-80">
-                <MdOutlineAddAPhoto className=" text-white text-xl" />
-                <input
-                  type="file"
-                  name="myfile"
-                  className="hidden"
-                  onChange={(e) => setInputImage(e.target.files[0])}
+              <div className="flex flex-col gap-5 mt-5 relative">
+                <div
+                  style={{
+                    backgroundImage:
+                      inputBanner !== null
+                        ? `url(${URL.createObjectURL(inputBanner)})`
+                        : '',
+                  }}
+                  className="bg-gray-600 h-40 bg-cover bg-center"
+                ></div>
+                <img
+                  src={
+                    inputImage !== null
+                      ? URL.createObjectURL(inputImage)
+                      : profile.profilePicURL
+                  }
+                  alt="profile-picture"
+                  className="absolute top-32 rounded-full h-24 w-24 border-black border-4 object-cover"
                 />
-              </label>
-              <label className="absolute rounded-full bg-gray-800 p-3 cursor-pointer top-[3.6em] left-[14.8em] opacity-80">
-                <MdOutlineAddAPhoto className=" text-white text-xl" />
-                <input
-                  type="file"
-                  name="myfile"
-                  className="hidden"
-                  onChange={(e) => setInputBanner(e.target.files[0])}
-                />
-              </label>
-              <div className="border border-gray-700 rounded p-2 mt-[4em]">
-                <p className="text-gray-400 font-light text-sm">Name</p>
-                <input
-                  value={profileName}
-                  onChange={(e) => setProfileName(e.target.value)}
-                  className="bg-black text-white outline-none mt-1 w-full placeholder:text-xl placeholder:text-gray-500"
-                />
-              </div>
-              <div className="border border-gray-700 rounded p-2 ">
-                <p className="text-gray-400 font-light text-sm">Bio</p>
-                <input
-                  value={profileBio}
-                  onChange={(e) => setProfileBio(e.target.value)}
-                  className="bg-black text-white outline-none mt-1 w-full placeholder:text-xl placeholder:text-gray-500"
-                />
-              </div>
-              <div className="border border-gray-700 rounded p-2 ">
-                <p className="text-gray-400 font-light text-sm">Location</p>
-                <input
-                  value={profileLocation}
-                  onChange={(e) => setProfileLocation(e.target.value)}
-                  className="bg-black text-white outline-none mt-1 w-full placeholder:text-xl placeholder:text-gray-500"
-                />
+                <label className="absolute rounded-full bg-gray-800 p-3 cursor-pointer top-[9.6em] left-[1.6em] opacity-80">
+                  <MdOutlineAddAPhoto className=" text-white text-xl" />
+                  <input
+                    type="file"
+                    name="myfile"
+                    className="hidden"
+                    onChange={(e) => setInputImage(e.target.files[0])}
+                  />
+                </label>
+                <label className="absolute rounded-full bg-gray-800 p-3 cursor-pointer top-[3.6em] left-[14.8em] opacity-80">
+                  <MdOutlineAddAPhoto className=" text-white text-xl" />
+                  <input
+                    type="file"
+                    name="myfile"
+                    className="hidden"
+                    onChange={(e) => setInputBanner(e.target.files[0])}
+                  />
+                </label>
+                <div className="border border-gray-700 rounded p-2 mt-[4em]">
+                  <p className="text-gray-400 font-light text-sm">Name</p>
+                  <input
+                    value={profileName}
+                    onChange={(e) => setProfileName(e.target.value)}
+                    className="bg-black text-white outline-none mt-1 w-full placeholder:text-xl placeholder:text-gray-500"
+                  />
+                </div>
+                <div className="border border-gray-700 rounded p-2 ">
+                  <p className="text-gray-400 font-light text-sm">Bio</p>
+                  <input
+                    value={profileBio}
+                    onChange={(e) => setProfileBio(e.target.value)}
+                    className="bg-black text-white outline-none mt-1 w-full placeholder:text-xl placeholder:text-gray-500"
+                  />
+                </div>
+                <div className="border border-gray-700 rounded p-2 ">
+                  <p className="text-gray-400 font-light text-sm">Location</p>
+                  <input
+                    value={profileLocation}
+                    onChange={(e) => setProfileLocation(e.target.value)}
+                    className="bg-black text-white outline-none mt-1 w-full placeholder:text-xl placeholder:text-gray-500"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </Animate>
         </div>
       )}
       <div
         style={{ backgroundImage: `url(${profile.banner})` }}
         className="h-44 w-35 bg-gray-800 bg-cover bg-center"
       ></div>
-
       <div className="relative ml-5 ">
         <Popover>
           <Popover.Button>
@@ -234,15 +305,17 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
           </Popover.Button>
           <Popover.Overlay className="fixed inset-0 bg-gray-700 bg-opacity-80 z-40" />
           <Popover.Panel>
-            <img
-              alt="profile-picture"
-              src={profile.profilePicURL}
-              className="h-max-80"
-              className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50"
-            />
+            <Animate play start={{ opacity: 0 }} end={{ opacity: 1 }}>
+              <img
+                alt="profile-picture"
+                src={profile.profilePicURL}
+                className="h-max-80"
+                className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-2xl mb-2 mr-1 max-w-[45em] z-50"
+              />
+            </Animate>
           </Popover.Panel>
         </Popover>
-        {profile.uid === currentUser.uid ? (
+        {profile.uid === getAuth().currentUser.uid ? (
           <button
             onClick={() => {
               if (profile.uid === getAuth().currentUser.uid) {
@@ -257,14 +330,18 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
         ) : (
           <button
             onClick={() => {
+              handleFollow();
               if (profile.uid === getAuth().currentUser.uid) {
-                setProfileName(profile.displayName);
-                setShowEditor(true);
+                setReload(!reload);
               }
             }}
-            className="absolute top-[1em] left-[27.5em] text-black bg-white font-bold border rounded-full  py-1 px-4 cursor-pointer hover:bg-gray-200"
+            className="absolute top-[1em] left-[26em] text-black bg-white font-bold border rounded-full  py-1 px-4 cursor-pointer hover:bg-gray-200"
           >
-            Follow
+            {!loading ? (
+              <p>{follow}</p>
+            ) : (
+              <BeatLoader color="black" size={10} />
+            )}
           </button>
         )}
       </div>
@@ -275,44 +352,54 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
         </div>
         <p>{profileBio}</p>
         {!profileLocation.length > 0 ? null : (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 cursor-not-allowed">
             <AiOutlineLink className="text-xl text-gray-400" />
             <p className="text-blue-500">{profileLocation}</p>
           </div>
         )}
         <div className="flex gap-2">
-          <div className="flex items-center gap-1">
-            <p>0</p>
+          <div
+            onClick={() => router.push(`/user/${username}/following`)}
+            className="flex items-center gap-1 cursor-pointer"
+          >
+            {profile.following ? <p>{profile.following.length}</p> : null}
             <p className="text-gray-400 font-light">Following</p>
           </div>
-          <div className="flex items-center gap-1">
-            <p>0</p>
+          <div
+            onClick={() => router.push(`/user/${username}/followers`)}
+            className="flex items-center gap-1 cursor-pointer"
+          >
+            {profile.followers ? <p>{profile.followers.length}</p> : null}{' '}
             <p className="text-gray-400 font-light">Followers</p>
           </div>
         </div>
       </div>
-      <div className="flex justify-between ml-10 mr-10 mt-8 text-gray-400 font-bold text-sm pb-10">
+      <div className="flex mx-10 mt-8 mb-4 justify-between text-gray-400 font-bold text-sm">
         <p
           onClick={() => setIndex('userTweets')}
           style={{ color: index === 'userTweets' ? 'white' : '#9ca3af' }}
+          className="cursor-pointer py-1 px-3"
         >
           Tweet
         </p>
         <p
           onClick={() => setIndex('userReplies')}
           style={{ color: index === 'userReplies' ? 'white' : '#9ca3af' }}
+          className="cursor-pointer py-1 px-3"
         >
           Tweets & replies
         </p>
         <p
           onClick={() => setIndex('userMedia')}
           style={{ color: index === 'userMedia' ? 'white' : '#9ca3af' }}
+          className="cursor-pointer py-1 px-3"
         >
           Media
         </p>
         <p
           onClick={() => setIndex('userLikes')}
           style={{ color: index === 'userLikes' ? 'white' : '#9ca3af' }}
+          className="cursor-pointer py-1 px-3"
         >
           Likes
         </p>

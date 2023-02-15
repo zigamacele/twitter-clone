@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
 import { db } from '@/pages/firebase-config';
+import { getAuth } from 'firebase/auth';
 import {
   collection,
+  doc,
+  documentId,
   getDocs,
   orderBy,
   query,
-  where,
-  documentId,
-  doc,
   Timestamp,
+  where,
 } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import DisplayTweet from './DisplayTweet';
-import { getAuth } from 'firebase/auth';
-import { useRouter, router } from 'next/router';
 
 export default function AllTweets({
   reload,
@@ -25,6 +24,10 @@ export default function AllTweets({
 }) {
   const [allTweets, setAllTweets] = useState([]);
   const auth = getAuth();
+
+  useEffect(() => {
+    fetchAllTweets();
+  }, []);
 
   useEffect(() => {
     fetchAllTweets();
@@ -150,6 +153,7 @@ export default function AllTweets({
             tweet={tweet}
             reload={reload}
             setReload={setReload}
+            setIndex={setIndex}
           />
         );
       })}

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { TbSearch } from 'react-icons/tb';
 import { BsThreeDots } from 'react-icons/bs';
+import { TbSearch } from 'react-icons/tb';
 
 export default function Aside() {
   return (
-    <div className="media:flex media:flex-col media:gap-3 media:mt-3 media:ml-8 media:w-[20em] hidden">
+    <div className="media:flex media:flex-col media:gap-3 media:mt-3 media:ml-8 media:w-[20em] hidden z-10">
       <div className="flex gap-2 items-center cursor-not-allowed bg-gray-800 rounded-full px-4 py-3 text-gray-500 text-sm">
         <TbSearch />
         <p>Search Twitter</p>
@@ -18,7 +18,7 @@ export default function Aside() {
             <p className="text-gray-400">Trending</p>
             <BsThreeDots />
           </div>
-          <p className="font-bold text-base">Gura</p>
+          <p className="font-bold text-base">Kobo</p>
           <p className="text-gray-400">11K Tweets</p>
         </div>
         <div className="flex flex-col font-light text-xs cursor-not-allowed">
@@ -26,8 +26,8 @@ export default function Aside() {
             <p className="text-gray-400">Trending</p>
             <BsThreeDots />
           </div>
-          <p className="font-bold text-base">Kobo</p>
-          <p className="text-gray-400">7,357 Tweets</p>
+          <p className="font-bold text-base">#pizzatower</p>
+          <p className="text-gray-400">28.2K Tweets</p>
         </div>
         <div className="flex flex-col font-light text-xs cursor-not-allowed">
           <div className="flex items-center justify-between">
@@ -61,10 +61,6 @@ export default function Aside() {
           <p className="font-bold text-base">Freddy</p>
           <p className="text-gray-400">25.3K Tweets</p>
         </div>
-      </div>
-      <div>
-        <p className="font-bold">Who to follow</p>
-        <div></div>
       </div>
       <div className="flex flex-col gap-1 text-gray-400 font-light text-xs">
         <div className="flex gap-2">

@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import { db } from '../pages/firebase-config';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useRouter, router } from 'next/router';
 import {
-  onSnapshot,
   addDoc,
-  doc,
   collection,
+  doc,
+  onSnapshot,
   serverTimestamp,
   updateDoc,
 } from 'firebase/firestore';
@@ -18,18 +14,22 @@ import {
   uploadBytes,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { db } from '../pages/firebase-config';
 
-import { RxImage } from 'react-icons/rx';
 import {
+  AiOutlineCalendar,
   AiOutlineGif,
   AiOutlineSmile,
-  AiOutlineCalendar,
 } from 'react-icons/ai';
+import { RxImage } from 'react-icons/rx';
 
-import { TbListDetails } from 'react-icons/tb';
-import { TfiLocationPin } from 'react-icons/tfi';
 import { BsGlobe2 } from 'react-icons/bs';
 import { IoIosArrowDown } from 'react-icons/io';
+import { TbListDetails } from 'react-icons/tb';
+import { TfiLocationPin } from 'react-icons/tfi';
 
 export default function Tweet({ reload, setReload }) {
   const [currentUser, setCurrentUser] = useState('');
@@ -148,7 +148,7 @@ export default function Tweet({ reload, setReload }) {
           </div>
           <input
             value={input}
-            className=" bg-black text-white outline-none pt-1 pb-5 w-full placeholder:text-xl placeholder:text-gray-500"
+            className=" bg-black text-white outline-none pt-1 pb-5 w-full placeholder:text-xl placeholder:text-gray-500 break-all"
             placeholder="What's happening?"
             onChange={handleChange}
           />

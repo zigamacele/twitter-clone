@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Animate } from 'react-simple-animate';
 import AllTweets from '../Components/AllTweets';
 
 export default function Bookmarks({ reload, setReload, index }) {
@@ -6,7 +7,7 @@ export default function Bookmarks({ reload, setReload, index }) {
     <div>
       <div className="flex justify-center">
         <div className="border border-gray-800 w-[35em]">
-          <p className="sticky top-0 backdrop-blur py-5 px-3 font-bold text-xl border border-gray-800 ">
+          <p className="sticky top-0 backdrop-blur py-5 px-3 font-bold text-xl border border-gray-800 bg-black/60">
             Bookmarks
           </p>
           <div className="flex flex-col scrollbar-hide">

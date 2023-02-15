@@ -11,6 +11,7 @@ export default function App({ Component, pageProps }) {
   const [logout, setLogout] = useState(true);
 
   useEffect(() => {
+    setLogout(true);
     setLogout(JSON.parse(sessionStorage.getItem('logout')));
   }, []);
 
@@ -29,7 +30,7 @@ export default function App({ Component, pageProps }) {
           setLogout={setLogout}
         />
       )}
-      <div className="h-screen overflow-scroll scrollbar-hide">
+      <div className="h-screen overflow-y-scroll overflow-x-hidden scrollbar-hide">
         <Component
           {...pageProps}
           reload={reload}
