@@ -17,13 +17,7 @@ import { FiBookmark, FiLogOut } from 'react-icons/fi';
 import { RiCloseLine, RiQuillPenLine } from 'react-icons/ri';
 import { TbDotsCircleHorizontal, TbMail, TbSearch } from 'react-icons/tb';
 
-export default function Navigation({
-  index,
-  setIndex,
-  reload,
-  setReload,
-  setLogout,
-}) {
+export default function Navigation({ index, setIndex, reload, setReload }) {
   const [currentUser, setCurrentUser] = useState('');
   const [loading, setLoading] = useState();
   const [newTweet, setNewTweet] = useState(false);
@@ -201,7 +195,6 @@ export default function Navigation({
                 <div
                   onClick={(e) => {
                     e.stopPropagation();
-                    setLogout(true);
                     // setLoading(true);
                     signOut(auth);
                     router.push('/login');

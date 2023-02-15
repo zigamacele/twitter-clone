@@ -20,15 +20,11 @@ function generateUsername(name) {
   return newName;
 }
 
-export default function Login({ setLogout }) {
+export default function Login({}) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const auth = getAuth();
   const user = auth.currentUser;
-
-  useEffect(() => {
-    setLogout(true);
-  }, []);
 
   async function handleSignIn() {
     const provider = new GoogleAuthProvider();
@@ -60,7 +56,6 @@ export default function Login({ setLogout }) {
     setIsLoading(true);
     setTimeout(() => {
       router.push('/Home');
-      setLogout(false);
     }, 2000);
   }
 
@@ -114,3 +109,5 @@ export default function Login({ setLogout }) {
     </div>
   );
 }
+
+Login.getLayout = (page) => page;

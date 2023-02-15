@@ -63,3 +63,73 @@
 [debug] [2023-02-15T20:06:17.455Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6c3f2d5b-1961-4651-b80e-c58dcca5190e"}
 [info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
 [info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5012 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5012\u001b[22m\u001b[24m"}}
+[debug] [2023-02-15T20:54:27.777Z] ----------------------------------------------------------------------
+[debug] [2023-02-15T20:54:27.778Z] Command:       /opt/homebrew/Cellar/node/19.6.0/bin/node /opt/homebrew/bin/firebase serve --only hosting
+[debug] [2023-02-15T20:54:27.779Z] CLI Version:   11.22.0
+[debug] [2023-02-15T20:54:27.779Z] Platform:      darwin
+[debug] [2023-02-15T20:54:27.779Z] Node Version:  v19.6.0
+[debug] [2023-02-15T20:54:27.779Z] Time:          Wed Feb 15 2023 21:54:27 GMT+0100 (Central European Standard Time)
+[debug] [2023-02-15T20:54:27.779Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-02-15T20:54:27.824Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-15T20:54:27.825Z] > authorizing via signed-in user (z.macele@gmail.com)
+[debug] [2023-02-15T20:54:27.825Z] [iam] checking project twitter-cl0ne for permissions ["firebase.projects.get"]
+[debug] [2023-02-15T20:54:27.825Z] > refreshing access token with scopes: []
+[debug] [2023-02-15T20:54:27.826Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-02-15T20:54:27.826Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-15T20:54:27.966Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-02-15T20:54:27.966Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-15T20:54:27.977Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions [none]
+[debug] [2023-02-15T20:54:27.977Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions x-goog-quota-user=projects/twitter-cl0ne
+[debug] [2023-02-15T20:54:27.977Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-15T20:54:28.750Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions 200
+[debug] [2023-02-15T20:54:28.751Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-15T20:54:28.752Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-15T20:54:29.053Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-15T20:54:29.055Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6c3f2d5b-1961-4651-b80e-c58dcca5190e"}
+[debug] [2023-02-15T20:54:29.058Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 
+[debug] [2023-02-15T20:54:30.086Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 200
+[debug] [2023-02-15T20:54:30.087Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites {"sites":[{"name":"projects/twitter-cl0ne/sites/twitter-cl0ne","defaultUrl":"https://twitter-cl0ne.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2023-02-15T20:54:30.087Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config [none]
+[debug] [2023-02-15T20:54:31.173Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config 200
+[debug] [2023-02-15T20:54:31.174Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config {"projectId":"twitter-cl0ne","appId":"1:34904522694:web:68e311cb35f1dba8a1bcc7","databaseURL":"https://twitter-cl0ne-default-rtdb.firebaseio.com","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central","apiKey":"AIzaSyBpJ8CA8p5FMwk8Rbo3heSkXm_5yiigMOo","authDomain":"twitter-cl0ne.firebaseapp.com","messagingSenderId":"34904522694"}
+[debug] [2023-02-15T20:54:31.181Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-15T20:54:31.408Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-15T20:54:31.408Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6c3f2d5b-1961-4651-b80e-c58dcca5190e"}
+[info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5013 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5013\u001b[22m\u001b[24m"}}
+[debug] [2023-02-15T21:53:06.553Z] ----------------------------------------------------------------------
+[debug] [2023-02-15T21:53:06.554Z] Command:       /opt/homebrew/Cellar/node/19.6.0/bin/node /opt/homebrew/bin/firebase serve --only hosting
+[debug] [2023-02-15T21:53:06.554Z] CLI Version:   11.22.0
+[debug] [2023-02-15T21:53:06.554Z] Platform:      darwin
+[debug] [2023-02-15T21:53:06.555Z] Node Version:  v19.6.0
+[debug] [2023-02-15T21:53:06.555Z] Time:          Wed Feb 15 2023 22:53:06 GMT+0100 (Central European Standard Time)
+[debug] [2023-02-15T21:53:06.555Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-02-15T21:53:06.596Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-15T21:53:06.596Z] > authorizing via signed-in user (z.macele@gmail.com)
+[debug] [2023-02-15T21:53:06.596Z] [iam] checking project twitter-cl0ne for permissions ["firebase.projects.get"]
+[debug] [2023-02-15T21:53:06.597Z] > refreshing access token with scopes: []
+[debug] [2023-02-15T21:53:06.598Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-02-15T21:53:06.598Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-15T21:53:06.740Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-02-15T21:53:06.740Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-15T21:53:06.749Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions [none]
+[debug] [2023-02-15T21:53:06.749Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions x-goog-quota-user=projects/twitter-cl0ne
+[debug] [2023-02-15T21:53:06.750Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-15T21:53:07.569Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions 200
+[debug] [2023-02-15T21:53:07.569Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-15T21:53:07.570Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-15T21:53:07.884Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-15T21:53:07.884Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6c3f2d5b-1961-4651-b80e-c58dcca5190e"}
+[debug] [2023-02-15T21:53:07.888Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 
+[debug] [2023-02-15T21:53:08.993Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 200
+[debug] [2023-02-15T21:53:08.994Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites {"sites":[{"name":"projects/twitter-cl0ne/sites/twitter-cl0ne","defaultUrl":"https://twitter-cl0ne.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2023-02-15T21:53:08.994Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config [none]
+[debug] [2023-02-15T21:53:09.753Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config 200
+[debug] [2023-02-15T21:53:09.753Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config {"projectId":"twitter-cl0ne","appId":"1:34904522694:web:68e311cb35f1dba8a1bcc7","databaseURL":"https://twitter-cl0ne-default-rtdb.firebaseio.com","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central","apiKey":"AIzaSyBpJ8CA8p5FMwk8Rbo3heSkXm_5yiigMOo","authDomain":"twitter-cl0ne.firebaseapp.com","messagingSenderId":"34904522694"}
+[debug] [2023-02-15T21:53:09.762Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-15T21:53:09.977Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-15T21:53:09.977Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6c3f2d5b-1961-4651-b80e-c58dcca5190e"}
+[info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5014 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5014\u001b[22m\u001b[24m"}}

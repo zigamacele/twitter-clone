@@ -28,7 +28,6 @@ export default function Following({ reload, setReload, index, setIndex }) {
     docSnap.forEach((doc) => {
       setUser(doc.data().uid);
     });
-    console.log(user);
   }
 
   async function fetchProfiles() {
@@ -45,9 +44,6 @@ export default function Following({ reload, setReload, index, setIndex }) {
       usersArray.push(doc.data());
     });
     setProfiles(usersArray);
-    console.log(usersArray);
-
-    console.log(profiles);
   }
 
   return (

@@ -72,8 +72,6 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
       setProfileName(doc.data().displayName);
 
       getCurrentUser();
-      console.log(currentUser);
-
       if (doc.data().followers.includes(getAuth().currentUser.uid))
         setFollow('Following');
       else setFollow('Follow');
@@ -157,7 +155,6 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
         followers: profileRemoveUID,
       });
     }
-    console.log('followers done');
 
     //following
 
@@ -319,7 +316,7 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
         <BsGear
           className="absolute left-[20.5em] p-1 text-2xl w-8 h-8 text-white hover:bg-gray-800 border rounded-full border-gray-500 cursor-pointer"
           onClick={() => {
-            if (profile.uid === getAuth().currentUser.uid) {
+            if (profile.uid !== currentUser.uid) {
               setProfileName(profile.displayName);
               setShowEditor(true);
             }
@@ -328,8 +325,7 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
 
         <button
           onClick={() => {
-            if (currentUser.uid !== getAuth().currentUser.uid) handleFollow();
-            else warn.toast('you cant follow yourself');
+            if (profile.uid !== currentUser.uid) handleFollow();
           }}
           className="absolute  left-[23.5em] text-black bg-white font-bold border rounded-full  py-1 px-4 cursor-pointer hover:bg-gray-200"
         >
