@@ -17,7 +17,7 @@ import {
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { db } from '../pages/firebase-config';
+import { db } from '../firebase-config';
 
 import {
   AiOutlineCalendar,

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
+import { db } from '@/firebase-config';
 import Logo from '@/images/twitter-logo-white.png';
-import { db } from '@/pages/firebase-config';
 import { getAuth } from 'firebase/auth';
 import {
   collection,

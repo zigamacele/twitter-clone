@@ -10,7 +10,7 @@ import {
 import { router } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Animate } from 'react-simple-animate';
-import { db } from '../pages/firebase-config';
+import { db } from '../firebase-config';
 
 import { AiOutlineDelete } from 'react-icons/ai';
 import { BiUserPlus } from 'react-icons/bi';

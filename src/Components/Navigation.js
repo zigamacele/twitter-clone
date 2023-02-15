@@ -1,7 +1,7 @@
 import LoadingScreen from '@/Components/LoadingScreen';
 import Tweet from '@/Components/Tweet';
+import { db } from '@/firebase-config';
 import Logo from '@/images/twitter-logo-white.png';
-import { db } from '@/pages/firebase-config';
 import { Popover } from '@headlessui/react';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';

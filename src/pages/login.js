@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { Animate, AnimateGroup, AnimateKeyframes } from 'react-simple-animate';
 import { toast } from 'react-toastify';
 import LoadingScreen from '../Components/LoadingScreen';
-import { db } from './firebase-config';
+import { db } from '../firebase-config';
 
 import { AiFillApple } from 'react-icons/ai';
 import { FcGoogle } from 'react-icons/fc';

@@ -1,4 +1,4 @@
-import { db } from '@/pages/firebase-config';
+import { db } from '@/firebase-config';
 import { Popover } from '@headlessui/react';
 import { getAuth } from 'firebase/auth';
 import {
@@ -23,6 +23,7 @@ import { Animate } from 'react-simple-animate';
 import BeatLoader from 'react-spinners/BeatLoader';
 
 import { AiOutlineLink } from 'react-icons/ai';
+import { BsGear } from 'react-icons/bs';
 import { MdOutlineAddAPhoto } from 'react-icons/md';
 import { RiCloseLine } from 'react-icons/ri';
 
@@ -45,7 +46,6 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
   useEffect(() => {
     setIndex('userTweets');
     findUsername();
-    getCurrentUser();
   }, []);
 
   useEffect(() => {
@@ -54,7 +54,6 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
 
   useEffect(() => {
     findUsername();
-    getCurrentUser();
   }, [reload]);
 
   async function getCurrentUser() {
@@ -71,6 +70,9 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
     querySnapshot.forEach((doc) => {
       setProfile(doc.data());
       setProfileName(doc.data().displayName);
+
+      getCurrentUser();
+      console.log(currentUser);
 
       if (doc.data().followers.includes(getAuth().currentUser.uid))
         setFollow('Following');
@@ -314,35 +316,25 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
             </Animate>
           </Popover.Panel>
         </Popover>
-        {profile.uid === getAuth().currentUser.uid ? (
-          <button
-            onClick={() => {
-              if (profile.uid === getAuth().currentUser.uid) {
-                setProfileName(profile.displayName);
-                setShowEditor(true);
-              }
-            }}
-            className="absolute top-[1em] left-[25em] text-base font-bold border rounded-full border-gray-500 py-1 px-4 cursor-pointer hover:bg-gray-900"
-          >
-            Edit Profile
-          </button>
-        ) : (
-          <button
-            onClick={() => {
-              handleFollow();
-              if (profile.uid === getAuth().currentUser.uid) {
-                setReload(!reload);
-              }
-            }}
-            className="absolute top-[1em] left-[26em] text-black bg-white font-bold border rounded-full  py-1 px-4 cursor-pointer hover:bg-gray-200"
-          >
-            {!loading ? (
-              <p>{follow}</p>
-            ) : (
-              <BeatLoader color="black" size={10} />
-            )}
-          </button>
-        )}
+        <BsGear
+          className="absolute left-[20.5em] p-1 text-2xl w-8 h-8 text-white hover:bg-gray-800 border rounded-full border-gray-500 cursor-pointer"
+          onClick={() => {
+            if (profile.uid === getAuth().currentUser.uid) {
+              setProfileName(profile.displayName);
+              setShowEditor(true);
+            }
+          }}
+        />
+
+        <button
+          onClick={() => {
+            if (currentUser.uid !== getAuth().currentUser.uid) handleFollow();
+            else warn.toast('you cant follow yourself');
+          }}
+          className="absolute  left-[23.5em] text-black bg-white font-bold border rounded-full  py-1 px-4 cursor-pointer hover:bg-gray-200"
+        >
+          {!loading ? <p>{follow}</p> : <BeatLoader color="black" size={10} />}
+        </button>
       </div>
       <div className="ml-5 mr-5 mt-20 flex flex-col gap-1">
         <div>
