@@ -340,7 +340,7 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
           <p className="font-light text-gray-400">@{profile.username}</p>
         </div>
         <p>{profileBio}</p>
-        {!profileLocation.length > 0 ? null : (
+        {!profileLocation ? null : (
           <div className="flex items-center gap-1 cursor-not-allowed">
             <AiOutlineLink className="text-xl text-gray-400" />
             <p className="text-blue-500">{profileLocation}</p>
