@@ -51,6 +51,8 @@ export default function Login({}) {
         newUser: true,
         followers: [],
         following: [],
+        bio: '',
+        location: '',
       });
     }
 

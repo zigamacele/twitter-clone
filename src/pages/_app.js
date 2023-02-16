@@ -38,12 +38,15 @@ export default function App({ Component, pageProps }) {
     });
 
   return getLayout(
-    <Component
-      {...pageProps}
-      reload={reload}
-      setReload={setReload}
-      index={index}
-      setIndex={setIndex}
-    />
+    <div>
+      <Component
+        {...pageProps}
+        reload={reload}
+        setReload={setReload}
+        index={index}
+        setIndex={setIndex}
+      />
+      <ToastContainer />
+    </div>
   );
 }
