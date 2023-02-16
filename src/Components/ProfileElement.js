@@ -316,7 +316,7 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
         <BsGear
           className="absolute left-[20.5em] p-1 text-2xl w-8 h-8 text-white hover:bg-gray-800 border rounded-full border-gray-500 cursor-pointer"
           onClick={() => {
-            if (profile.uid !== currentUser.uid) {
+            if (profile.uid === currentUser.uid) {
               setProfileName(profile.displayName);
               setShowEditor(true);
             }
