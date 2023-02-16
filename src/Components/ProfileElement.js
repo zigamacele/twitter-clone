@@ -70,6 +70,8 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
     querySnapshot.forEach((doc) => {
       setProfile(doc.data());
       setProfileName(doc.data().displayName);
+      setProfileBio(doc.data().bio);
+      setProfileLocation(doc.data().location);
 
       getCurrentUser();
       if (doc.data().followers.includes(getAuth().currentUser.uid))
@@ -277,7 +279,7 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
                   />
                 </div>
                 <div className="border border-gray-700 rounded p-2 ">
-                  <p className="text-gray-400 font-light text-sm">Location</p>
+                  <p className="text-gray-400 font-light text-sm">Website</p>
                   <input
                     value={profileLocation}
                     onChange={(e) => setProfileLocation(e.target.value)}
