@@ -44,12 +44,13 @@ export default function ProfileElement({ reload, setReload, index, setIndex }) {
   const username = router.query.username;
 
   useEffect(() => {
-    setIndex('userTweets');
     findUsername();
-  }, []);
+    setIndex('userTweets');
+  }, [router]);
 
   useEffect(() => {
     findUsername();
+    console.log(index);
   }, [index]);
 
   useEffect(() => {

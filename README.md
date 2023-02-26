@@ -1,7 +1,6 @@
 # Twitter Clone
 
-Twitter clone built with Next.js, React and Tailwind CSS using Firestore and Cloud Storage
-
+Twitter clone built with Next.js, Javascript and Tailwind CSS using Firestore and Cloud Storage
 
 <img src="https://i.imgur.com/uqGqkEw.png" alt= “” height="500px">
 <img src="https://i.imgur.com/gKfFN9T.png" alt= “” height="500px">
@@ -20,8 +19,8 @@ Twitter clone built with Next.js, React and Tailwind CSS using Firestore and Clo
 
 ## Used Technologies
 
-- Next.js
-- React
+- Next.js(React Framework)
+- Javascript
 - Firebase
 - Tailwind CSS
 - Headless UI

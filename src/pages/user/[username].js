@@ -9,10 +9,6 @@ export default function Profile({ reload, setReload, index, setIndex }) {
   const router = useRouter();
   const username = router.query.username;
 
-  useEffect(() => {
-    setIndex('userTweets');
-  }, []);
-
   return (
     <div className="flex justify-center">
       <div className="flex flex-col border border-gray-800 w-[35em]">

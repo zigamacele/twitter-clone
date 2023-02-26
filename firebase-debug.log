@@ -303,3 +303,129 @@
 [debug] [2023-02-16T09:14:32.663Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_6c3f2d5b-1961-4651-b80e-c58dcca5190e"}
 [info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
 [info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5019 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5019\u001b[22m\u001b[24m"}}
+[debug] [2023-02-25T06:19:37.373Z] ----------------------------------------------------------------------
+[debug] [2023-02-25T06:19:37.374Z] Command:       /opt/homebrew/Cellar/node/19.6.0/bin/node /opt/homebrew/bin/firebase serve --only hosting
+[debug] [2023-02-25T06:19:37.374Z] CLI Version:   11.22.0
+[debug] [2023-02-25T06:19:37.374Z] Platform:      darwin
+[debug] [2023-02-25T06:19:37.375Z] Node Version:  v19.6.0
+[debug] [2023-02-25T06:19:37.375Z] Time:          Sat Feb 25 2023 07:19:37 GMT+0100 (Central European Standard Time)
+[debug] [2023-02-25T06:19:37.375Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-02-25T06:19:37.376Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-02-25T06:19:37.416Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-25T06:19:37.416Z] > authorizing via signed-in user (z.macele@gmail.com)
+[debug] [2023-02-25T06:19:37.416Z] [iam] checking project twitter-cl0ne for permissions ["firebase.projects.get"]
+[debug] [2023-02-25T06:19:37.417Z] > refreshing access token with scopes: []
+[debug] [2023-02-25T06:19:37.417Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-02-25T06:19:37.417Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-25T06:19:37.588Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-02-25T06:19:37.588Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-25T06:19:37.601Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions [none]
+[debug] [2023-02-25T06:19:37.601Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions x-goog-quota-user=projects/twitter-cl0ne
+[debug] [2023-02-25T06:19:37.601Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-25T06:19:37.746Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2023-02-25T06:19:37.746Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2023-02-25T06:19:38.388Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions 200
+[debug] [2023-02-25T06:19:38.389Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-25T06:19:38.390Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-25T06:19:38.677Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-25T06:19:38.677Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"DELETED","etag":"1_4065e645-b3aa-475d-b364-2bd1b730a33b"}
+[debug] [2023-02-25T06:19:38.681Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 
+[debug] [2023-02-25T06:19:39.671Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 409
+[debug] [2023-02-25T06:19:39.671Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites {"error":{"code":409,"message":"Channel `projects/34904522694/sites/twitter-cl0ne/channels/live` already exists.","status":"ALREADY_EXISTS"}}
+[debug] [2023-02-25T06:19:39.672Z] Failed to list hosting sites
+[debug] HTTP Error: 409, Channel `projects/34904522694/sites/twitter-cl0ne/channels/live` already exists.
+[debug] [2023-02-25T06:19:39.672Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config [none]
+[debug] [2023-02-25T06:19:40.380Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config 403
+[debug] [2023-02-25T06:19:40.380Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config {"error":{"code":403,"message":"Project '34904522694' not found or permission denied.\ncom.google.api.tenant.error.TenantManagerException: Project '34904522694' not found or permission denied.","status":"PERMISSION_DENIED"}}
+[debug] [2023-02-25T06:19:40.381Z] fetchWebSetup error: FirebaseError: HTTP Error: 403, Project '34904522694' not found or permission denied.
+com.google.api.tenant.error.TenantManagerException: Project '34904522694' not found or permission denied.
+[warn] ⚠  hosting: Authentication error when trying to fetch your current web app configuration, have you run firebase login? 
+[warn] ⚠  hosting: Using web app configuration from cache. 
+[debug] [2023-02-25T06:19:40.383Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-25T06:19:40.599Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-25T06:19:40.599Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"DELETED","etag":"1_4065e645-b3aa-475d-b364-2bd1b730a33b"}
+[info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5002 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5002\u001b[22m\u001b[24m"}}
+[debug] [2023-02-25T21:57:47.784Z] ----------------------------------------------------------------------
+[debug] [2023-02-25T21:57:47.786Z] Command:       /opt/homebrew/Cellar/node/19.6.0/bin/node /opt/homebrew/bin/firebase serve --only hosting
+[debug] [2023-02-25T21:57:47.786Z] CLI Version:   11.22.0
+[debug] [2023-02-25T21:57:47.786Z] Platform:      darwin
+[debug] [2023-02-25T21:57:47.786Z] Node Version:  v19.6.0
+[debug] [2023-02-25T21:57:47.786Z] Time:          Sat Feb 25 2023 22:57:47 GMT+0100 (Central European Standard Time)
+[debug] [2023-02-25T21:57:47.786Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-02-25T21:57:47.827Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-25T21:57:47.828Z] > authorizing via signed-in user (z.macele@gmail.com)
+[debug] [2023-02-25T21:57:47.828Z] [iam] checking project twitter-cl0ne for permissions ["firebase.projects.get"]
+[debug] [2023-02-25T21:57:47.828Z] > refreshing access token with scopes: []
+[debug] [2023-02-25T21:57:47.829Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-02-25T21:57:47.829Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-25T21:57:47.966Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-02-25T21:57:47.966Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-25T21:57:47.978Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions [none]
+[debug] [2023-02-25T21:57:47.978Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions x-goog-quota-user=projects/twitter-cl0ne
+[debug] [2023-02-25T21:57:47.978Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-25T21:57:48.853Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions 200
+[debug] [2023-02-25T21:57:48.853Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-25T21:57:48.854Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-25T21:57:49.131Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-25T21:57:49.131Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"DELETED","etag":"1_4065e645-b3aa-475d-b364-2bd1b730a33b"}
+[debug] [2023-02-25T21:57:49.134Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 
+[debug] [2023-02-25T21:57:50.144Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 409
+[debug] [2023-02-25T21:57:50.145Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites {"error":{"code":409,"message":"Channel `projects/34904522694/sites/twitter-cl0ne/channels/live` already exists.","status":"ALREADY_EXISTS"}}
+[debug] [2023-02-25T21:57:50.147Z] Failed to list hosting sites
+[debug] HTTP Error: 409, Channel `projects/34904522694/sites/twitter-cl0ne/channels/live` already exists.
+[debug] [2023-02-25T21:57:50.148Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config [none]
+[debug] [2023-02-25T21:57:50.898Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config 403
+[debug] [2023-02-25T21:57:50.898Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config {"error":{"code":403,"message":"Project '34904522694' not found or permission denied.\ncom.google.api.tenant.error.TenantManagerException: Project '34904522694' not found or permission denied.","status":"PERMISSION_DENIED"}}
+[debug] [2023-02-25T21:57:50.898Z] fetchWebSetup error: FirebaseError: HTTP Error: 403, Project '34904522694' not found or permission denied.
+com.google.api.tenant.error.TenantManagerException: Project '34904522694' not found or permission denied.
+[warn] ⚠  hosting: Authentication error when trying to fetch your current web app configuration, have you run firebase login? 
+[warn] ⚠  hosting: Using web app configuration from cache. 
+[debug] [2023-02-25T21:57:50.901Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-25T21:57:51.099Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-25T21:57:51.099Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"DELETED","etag":"1_4065e645-b3aa-475d-b364-2bd1b730a33b"}
+[info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5002 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5002\u001b[22m\u001b[24m"}}
+[debug] [2023-02-26T06:18:48.704Z] ----------------------------------------------------------------------
+[debug] [2023-02-26T06:18:48.705Z] Command:       /opt/homebrew/Cellar/node/19.6.0/bin/node /opt/homebrew/bin/firebase serve --only hosting
+[debug] [2023-02-26T06:18:48.705Z] CLI Version:   11.22.0
+[debug] [2023-02-26T06:18:48.706Z] Platform:      darwin
+[debug] [2023-02-26T06:18:48.706Z] Node Version:  v19.6.0
+[debug] [2023-02-26T06:18:48.706Z] Time:          Sun Feb 26 2023 07:18:48 GMT+0100 (Central European Standard Time)
+[debug] [2023-02-26T06:18:48.706Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-02-26T06:18:48.747Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-02-26T06:18:48.747Z] > authorizing via signed-in user (z.macele@gmail.com)
+[debug] [2023-02-26T06:18:48.747Z] [iam] checking project twitter-cl0ne for permissions ["firebase.projects.get"]
+[debug] [2023-02-26T06:18:48.748Z] > refreshing access token with scopes: []
+[debug] [2023-02-26T06:18:48.749Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-02-26T06:18:48.749Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-26T06:18:48.902Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-02-26T06:18:48.902Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-02-26T06:18:48.914Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions [none]
+[debug] [2023-02-26T06:18:48.914Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions x-goog-quota-user=projects/twitter-cl0ne
+[debug] [2023-02-26T06:18:48.914Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-26T06:18:49.701Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions 200
+[debug] [2023-02-26T06:18:49.701Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/twitter-cl0ne:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2023-02-26T06:18:49.701Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-26T06:18:49.959Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-26T06:18:49.959Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"DELETED","etag":"1_4065e645-b3aa-475d-b364-2bd1b730a33b"}
+[debug] [2023-02-26T06:18:49.961Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 
+[debug] [2023-02-26T06:18:50.972Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites 409
+[debug] [2023-02-26T06:18:50.972Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/twitter-cl0ne/sites {"error":{"code":409,"message":"Channel `projects/34904522694/sites/twitter-cl0ne/channels/live` already exists.","status":"ALREADY_EXISTS"}}
+[debug] [2023-02-26T06:18:50.973Z] Failed to list hosting sites
+[debug] HTTP Error: 409, Channel `projects/34904522694/sites/twitter-cl0ne/channels/live` already exists.
+[debug] [2023-02-26T06:18:50.973Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config [none]
+[debug] [2023-02-26T06:18:51.647Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config 403
+[debug] [2023-02-26T06:18:51.647Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne/webApps/-/config {"error":{"code":403,"message":"Project '34904522694' not found or permission denied.\ncom.google.api.tenant.error.TenantManagerException: Project '34904522694' not found or permission denied.","status":"PERMISSION_DENIED"}}
+[debug] [2023-02-26T06:18:51.647Z] fetchWebSetup error: FirebaseError: HTTP Error: 403, Project '34904522694' not found or permission denied.
+com.google.api.tenant.error.TenantManagerException: Project '34904522694' not found or permission denied.
+[warn] ⚠  hosting: Authentication error when trying to fetch your current web app configuration, have you run firebase login? 
+[warn] ⚠  hosting: Using web app configuration from cache. 
+[debug] [2023-02-26T06:18:51.649Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne [none]
+[debug] [2023-02-26T06:18:51.862Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne 200
+[debug] [2023-02-26T06:18:51.863Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/twitter-cl0ne {"projectId":"twitter-cl0ne","projectNumber":"34904522694","displayName":"twittter-clone","name":"projects/twitter-cl0ne","resources":{"hostingSite":"twitter-cl0ne","realtimeDatabaseInstance":"twitter-cl0ne-default-rtdb","storageBucket":"twitter-cl0ne.appspot.com","locationId":"us-central"},"state":"DELETED","etag":"1_4065e645-b3aa-475d-b364-2bd1b730a33b"}
+[info] i  hosting[twitter-cl0ne]: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] ✔  hosting[twitter-cl0ne]: Local server: http://localhost:5003 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5003\u001b[22m\u001b[24m"}}

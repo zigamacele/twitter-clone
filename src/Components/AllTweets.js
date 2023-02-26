@@ -7,9 +7,9 @@ import {
   getDocs,
   orderBy,
   query,
-  Timestamp,
   where,
 } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import DisplayTweet from './DisplayTweet';
 
@@ -23,11 +23,16 @@ export default function AllTweets({
   username,
 }) {
   const [allTweets, setAllTweets] = useState([]);
+  const router = useRouter();
   const auth = getAuth();
 
   useEffect(() => {
     fetchAllTweets();
   }, []);
+
+  useEffect(() => {
+    fetchAllTweets();
+  }, [router.query]);
 
   useEffect(() => {
     fetchAllTweets();
